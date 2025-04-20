@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
+using QueseriaSoftware.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllersWithViews();
+
+//Services para inyeccion de dependencias
+builder.Services.AddScoped<IUsuariosService,UsuariosService>();
+builder.Services.AddScoped<IProductosService,ProductosService>();
 
 var app = builder.Build();
 

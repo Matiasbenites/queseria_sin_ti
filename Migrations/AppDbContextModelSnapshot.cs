@@ -41,7 +41,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Productos");
+                    b.ToTable("Productos", (string)null);
                 });
 #pragma warning restore 612, 618
         }
