@@ -8,11 +8,15 @@ namespace QueseriaSoftware.Data.Configurations.Usuarios
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
+            builder.Property(u => u.NombreDeUsuario).IsRequired().HasMaxLength(100);
             builder.Property(u => u.Nombre).IsRequired().HasMaxLength(100);
+            builder.Property(u => u.Password).IsRequired().HasMaxLength(250);
             builder.Property(u => u.Apellido).IsRequired().HasMaxLength(100);
             builder.Property(u => u.Dni).IsRequired();
             builder.Property(u => u.Email).IsRequired().HasMaxLength(250);
             builder.HasIndex(u => u.Email)
+                .IsUnique();
+            builder.HasIndex(u => u.NombreDeUsuario)
                 .IsUnique();
         }
     }

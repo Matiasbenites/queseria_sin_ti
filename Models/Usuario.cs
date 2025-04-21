@@ -8,6 +8,7 @@ namespace QueseriaSoftware.Models
     public class Usuario : AuditableEntity
     {
         public required string Email { get; set; }
+        public required string NombreDeUsuario { get; set; }
         public required string Password { get; set; }
         public required string Dni { get; set; }
         public required string Nombre { get; set; }
