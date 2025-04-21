@@ -1,6 +1,10 @@
-﻿namespace QueseriaSoftware.Services
+﻿using QueseriaSoftware.Models;
+
+namespace QueseriaSoftware.Services
 {
     public interface IUsuariosService
     {
+        Usuario? Autenticar(string nombreUsuario, string password);
+
     }
 }
