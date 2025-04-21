@@ -19,6 +19,15 @@ namespace QueseriaSoftware.Data.Configurations.Usuarios
                 CreadoEn = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc),
                 Activo = true
             });
+
+            builder.HasData(new Rol
+            {
+                Id = 2,
+                Nombre = "Cliente",
+                Descripcion = "Rol de cliente",
+                CreadoEn = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+                Activo = true
+            });
         }
     }
 }

@@ -19,7 +19,7 @@ namespace QueseriaSoftware.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "Id", "Activo", "Apellido", "CreadoEn", "Dni", "Email", "ModificadoEn", "Nombre", "NombreDeUsuario", "Password", "Telefono" },
-                values: new object[] { 1, true, "General", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "12345678", "admin@test.com", null, "Administrador", "admin", "2TqRgh1rqZzD1pFbWbdA3MxgNEcdsF7p8hDwvlT0zas=", "123456789" });
+                values: new object[] { 1, true, "General", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "12345678", "admin@queseria.com", null, "Administrador", "admin", "JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=", "123456789" });
 
             migrationBuilder.InsertData(
                 table: "UsuarioRoles",
