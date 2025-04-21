@@ -31,6 +31,14 @@ namespace QueseriaSoftware.Data.Configurations.Usuarios
             builder.HasOne(ur => ur.Rol)
                    .WithMany(r => r.UsuarioRoles)
                    .HasForeignKey(ur => ur.IdRol);
+
+            builder.HasData(new UsuarioRol
+            {
+                Id = 1,
+                IdUsuario = 1,
+                IdRol = 1,
+                Activo = true
+            });
         }
     }
 }

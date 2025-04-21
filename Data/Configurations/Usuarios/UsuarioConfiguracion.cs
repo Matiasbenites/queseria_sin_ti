@@ -18,6 +18,20 @@ namespace QueseriaSoftware.Data.Configurations.Usuarios
                 .IsUnique();
             builder.HasIndex(u => u.NombreDeUsuario)
                 .IsUnique();
+
+            builder.HasData(new Usuario
+            {
+                Id = 1,
+                Email = "admin@queseria.com",
+                NombreDeUsuario = "admin",
+                Password = "2TqRgh1rqZzD1pFbWbdA3MxgNEcdsF7p8hDwvlT0zas=", // SHA256 hash de admin123
+                Dni = "12345678",
+                Nombre = "Administrador",
+                Apellido = "General",
+                Telefono = "123456789",
+                CreadoEn = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+                Activo = true
+            });
         }
     }
 }

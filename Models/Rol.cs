@@ -8,6 +8,6 @@ namespace QueseriaSoftware.Models
         public required string Nombre { get; set; }
         public string? Descripcion { get; set; }
 
-        public required ICollection<UsuarioRol> UsuarioRoles { get; set; } = new List<UsuarioRol>();
+        public ICollection<UsuarioRol> UsuarioRoles { get; set; } = new List<UsuarioRol>();
     }
 }

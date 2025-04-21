@@ -14,6 +14,6 @@ namespace QueseriaSoftware.Models
         public required string Nombre { get; set; }
         public required string Apellido { get; set; }
         public string? Telefono { get; set; }
-        public required ICollection<UsuarioRol> UsuarioRoles { get; set; } = new List<UsuarioRol>();
+        public ICollection<UsuarioRol> UsuarioRoles { get; set; } = new List<UsuarioRol>();
     }
 }

@@ -10,6 +10,15 @@ namespace QueseriaSoftware.Data.Configurations.Usuarios
         {
             builder.Property(r => r.Nombre).IsRequired().HasMaxLength(100);
             builder.Property(r => r.Descripcion).HasMaxLength(250);
+
+            builder.HasData(new Rol
+            {
+                Id = 1,
+                Nombre = "Admin",
+                Descripcion = "Rol de administrador",
+                CreadoEn = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+                Activo = true
+            });
         }
     }
 }
