@@ -24,7 +24,7 @@ namespace QueseriaSoftware.Data.Configurations.Usuarios
                 Id = 1,
                 Email = "admin@queseria.com",
                 NombreDeUsuario = "admin",
-                Password = "2TqRgh1rqZzD1pFbWbdA3MxgNEcdsF7p8hDwvlT0zas=", // SHA256 hash de admin123
+                Password = "JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=", // SHA256 hash de admin123
                 Dni = "12345678",
                 Nombre = "Administrador",
                 Apellido = "General",

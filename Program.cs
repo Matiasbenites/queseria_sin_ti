@@ -8,15 +8,28 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 
 //Services para inyeccion de dependencias
 builder.Services.AddScoped<IUsuariosService,UsuariosService>();
 builder.Services.AddScoped<IProductosService,ProductosService>();
+builder.Services.AddScoped<ISesionService,SesionService>();
+
+builder.Services.AddAuthentication("QueseriaCookiesAuth")
+    .AddCookie("QueseriaCookiesAuth", options =>
+    {
+        options.LoginPath = "/Login";
+        options.LogoutPath = "/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.AccessDeniedPath = "/Home/Error";
+    });
+
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
