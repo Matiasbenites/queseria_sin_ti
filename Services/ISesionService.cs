@@ -8,6 +8,7 @@ namespace QueseriaSoftware.Services
         Task<UsuarioLoginDto?> AutenticarAsync(string nombreUsuario, string password);
         Task IniciarSesionAsync(UsuarioLoginDto usuario);
         Task CerrarSesionAsync();
+        string CalcularHash(string input);
 
     }
 }
