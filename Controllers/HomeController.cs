@@ -32,5 +32,11 @@ namespace QueseriaSoftware.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [AllowAnonymous]
+        public IActionResult AccesoDenegado()
+        {
+            return View("~/Views/Shared/AccesoDenegado.cshtml");
+        }
     }
 }

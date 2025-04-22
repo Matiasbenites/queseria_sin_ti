@@ -22,7 +22,7 @@ builder.Services.AddAuthentication("QueseriaCookiesAuth")
         options.LoginPath = "/Login";
         options.LogoutPath = "/Logout";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-        options.AccessDeniedPath = "/Home/Error";
+        options.AccessDeniedPath = "/Home/AccesoDenegado";
     });
 
 

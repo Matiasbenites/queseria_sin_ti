@@ -18,9 +18,14 @@ namespace QueseriaSoftware.Controllers
         {
             _sesionService = usuariosService;
         }
+
         [HttpGet]
         public IActionResult Index()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var model = new LoginViewModel();
             return View(model);
         }
