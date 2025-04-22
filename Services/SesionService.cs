@@ -26,7 +26,7 @@ namespace QueseriaSoftware.Services
             var passwordHash = CalcularHash(password);
 
             var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.NombreDeUsuario == nombreUsuario && u.Password == passwordHash);
+                .FirstOrDefaultAsync(u => (u.NombreDeUsuario == nombreUsuario || u.Email == nombreUsuario) && u.Password == passwordHash);
 
             if (usuario == null)
                 return null;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QueseriaSoftware.Services;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 
 namespace QueseriaSoftware.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
 

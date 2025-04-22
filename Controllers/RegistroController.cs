@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
@@ -10,6 +11,7 @@ using System.Data;
 
 namespace QueseriaSoftware.Controllers
 {
+    [AllowAnonymous]
     public class RegistroController : Controller
     {
         private readonly AppDbContext _context;
