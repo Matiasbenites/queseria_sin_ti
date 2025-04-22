@@ -20,3 +20,76 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Fondo gris claro para encabezados */
+.section-header {
+    background-color: #d9d9d9;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 2em;
+}
+
+/* Contenedor centrado vertical y horizontal */
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Caja de formularios */
+.form-box {
+    width: 300px;
+}
+
+/* Inputs estilo gris */
+.input-gray {
+    background-color: #d9d9d9;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 3px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+/* Botón verde */
+.btn-green {
+    background-color: #79c57d;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+    .btn-green:hover {
+        color: white;
+        background-color: #68b16d;
+    }
+
+/* Color gris claro para los floating labels cuando el input no está enfocado ni tiene valor */
+.form-floating > label {
+    color: #6c757d;
+}
+
+.form-control:focus {
+    border-color: #28a745; /* verde botón */
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* verde con transparencia */
+    outline: 0;
+}
+
+
+
+/*SECCION MENU PRINCIPAL*/
+.menu-btn-container{
+    margin-bottom: 5px;
+}
+    .menu-btn-container a {
+        max-width: 15em;
+        text-align: center;
+        text-decoration: none;
+    }

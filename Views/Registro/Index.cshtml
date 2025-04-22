@@ -3,60 +3,66 @@
     ViewData["Title"] = "Registro";
 }
 
-<h2 class="text-center mt-4">Crear una cuenta</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12 section-header">
+            Crear una cuenta
+        </div>
 
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8">
-        <form asp-action="Index" method="post" novalidate>
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="col-12 centered-container">
+            <div class="form-box">
+                <form asp-action="Index" method="post" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" class="form-control" placeholder="Correo electrónico" />
+                        <label asp-for="Email"></label>
+                        <span asp-validation-for="Email" class="text-danger d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="NombreDeUsuario" class="form-control" placeholder="Nombre de usuario" />
+                        <label asp-for="NombreDeUsuario"></label>
+                        <span asp-validation-for="NombreDeUsuario" class="text-danger d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Contraseña" />
+                        <label asp-for="Password"></label>
+                        <span asp-validation-for="Password" class="text-danger d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Dni" class="form-control" placeholder="DNI" />
+                        <label asp-for="Dni"></label>
+                        <span asp-validation-for="Dni" class="text-danger d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                        <label asp-for="Nombre"></label>
+                        <span asp-validation-for="Nombre" class="text-danger d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Apellido" class="form-control" placeholder="Apellido" />
+                        <label asp-for="Apellido"></label>
+                        <span asp-validation-for="Apellido" class="text-danger d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="Telefono" class="form-control" placeholder="Teléfono" />
+                        <label asp-for="Telefono"></label>
+                        <span asp-validation-for="Telefono" class="text-danger d-block"></span>
+                    </div>
+
+                    <button type="submit" class="btn-green">Registrarse</button>
+                </form>
             </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="NombreDeUsuario"></label>
-                <input asp-for="NombreDeUsuario" class="form-control" />
-                <span asp-validation-for="NombreDeUsuario" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Dni"></label>
-                <input asp-for="Dni" class="form-control" />
-                <span asp-validation-for="Dni" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Nombre"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Apellido"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-4">
-                <label asp-for="Telefono"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-
-            <button type="submit" class="btn btn-success w-100">Registrarse</button>
-        </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }

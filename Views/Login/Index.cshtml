@@ -3,28 +3,33 @@
 @{
     ViewData["Title"] = "Iniciar Sesión";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-12 section-header">
+            Inicio de Sesión
+        </div>
 
-<h2 class="text-center mt-4">Iniciar Sesión</h2>
+        <div class="col-12 centered-container">
+            <div class="form-box">
+                <form asp-action="Index" method="post" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-<div class="row justify-content-center mt-4">
-    <div class="col-md-6">
-        <form asp-action="Index" method="post" novalidate>
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="form-floating mb-2">
+                        <input asp-for="Username" class="form-control input-gray" placeholder="Usuario" />
+                        <label asp-for="Username"></label>
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger d-block mb-2"></span>
 
-            <div class="form-group mb-3">
-                <label asp-for="Username" class="form-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" class="form-control input-gray" type="password" placeholder="Contraseña" />
+                        <label asp-for="Password"></label>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger d-block mb-3"></span>
+
+                    <button type="submit" class="btn-green">Ingresar</button>
+                </form>
             </div>
-
-            <div class="form-group mb-4">
-                <label asp-for="Password" class="form-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-        </form>
+        </div>
     </div>
 </div>
 
