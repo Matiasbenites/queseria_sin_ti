@@ -1,5 +1,6 @@
 ﻿using QueseriaSoftware.Models.EntityConfigs;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QueseriaSoftware.Models
 {
@@ -16,5 +17,15 @@ namespace QueseriaSoftware.Models
         public int Stock { get; set; }
 
         public string? ImgUrl { get; set; }
+
+        public required int IdCategoria { get; set; }
+
+        [ForeignKey("IdCategoria")]
+        public Categoria? Categoria { get; set; }
+
+        public required int IdMarca { get; set; }
+
+        [ForeignKey("IdMarca")]
+        public Marca? Marca { get; set; }
     }
 }
