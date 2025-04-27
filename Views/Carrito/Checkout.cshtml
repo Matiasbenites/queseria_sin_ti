@@ -1,7 +1,82 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model QueseriaSoftware.ViewModels.CarritoViewModel
 
-<h1>HELLO!</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12 section-header">
+            Checkout
+        </div>
+
+        @if (Model.Lineas != null && Model.Lineas.Count > 0)
+        {
+            <div class="col-12">
+                <div class="table-responsive" style="background-color: #ffffff;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var linea in Model.Lineas)
+                            {
+                                <tr>
+                                    <td>@linea.Nombre</td>
+                                    <td>
+                                        <form asp-action="ActualizarCantidad" asp-controller="Carrito" method="post" class="d-flex">
+                                            <input type="hidden" name="LineaId" value="@linea.LineaId" />
+                                            <input type="number" name="Cantidad" value="@linea.Cantidad" min="1" class="form-control input-gray me-2" style="width: 80px; margin-bottom: initial;" />
+                                            <input type="hidden" name="returnUrl" value="@Url.Action("Checkout", "Carrito")" />
+                                            <button type="submit" class="btn-green" style="width: 100px;">Actualizar</button>
+                                        </form>
+                                    </td>
+                                    <td>$@linea.Precio.ToString("0.00")</td>
+                                    <td>$@((linea.Cantidad * linea.Precio).ToString("0.00"))</td>
+                                    <td>
+                                        <form asp-action="EliminarLinea" asp-controller="Carrito" method="post">
+                                            <input type="hidden" name="LineaId" value="@linea.LineaId" />
+                                            <input type="hidden" name="returnUrl" value="@Url.Action("Checkout", "Carrito")" />
+                                            <button type="submit" class="btn-red" style="width: 100px;">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="mt-4">
+                        <table class="table">
+                            <tr>
+                                <th style="text-align:right;">Total:</th>
+                                <td style="text-align:right; font-weight:bold;">$@Model.Total.ToString("0.00")</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <a asp-controller="Catalogo" asp-action="Index" class="btn-green" style="width: 200px;">Volver al catálogo</a>
+            </div>
+            <div class="col-6 d-flex justify-content-end align-items-end">
+                <button type="submit" class="btn-green" style="width: 200px;">Finalizar compra</button>
+            </div>
+        }
+        else
+        {
+            <div class="col-12 d-flex justify-content-center">
+                <div class="form-box p-4" style="background-color: #d9d9d9; text-align:center;">
+                    <p>No hay productos en tu carrito.</p>
+                    <a asp-controller="Catalogo" asp-action="Index" class="btn-green mt-3" style="width: 200px;">Volver al catálogo</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/cart.js"></script>
+}

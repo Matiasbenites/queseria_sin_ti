@@ -53,7 +53,6 @@ namespace QueseriaSoftware.Services
                 })
                 .ToListAsync();
 
-            // 🚀 Acá, ya en memoria, agregás la cantidad de carrito
             foreach (var producto in productos)
             {
                 producto.CantidadEnCarrito = carrito

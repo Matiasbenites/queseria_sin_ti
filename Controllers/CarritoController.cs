@@ -22,9 +22,10 @@ namespace QueseriaSoftware.Controllers
         }
 
 
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout()
         {
-            return View();
+            var carrito = await _carritoService.ObtenerCarritoCompleto("1");
+            return View(carrito);
         }
 
         [HttpPost]
@@ -70,7 +71,7 @@ namespace QueseriaSoftware.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarCantidad(int lineaId, int cantidad)
+        public async Task<IActionResult> ActualizarCantidad(int lineaId, int cantidad, string returnUrl)
         {
             // Verificar stock antes de actualizar
             var linea = await _carritoService.ObtenerLineaCarrito(lineaId);
@@ -87,16 +88,23 @@ namespace QueseriaSoftware.Controllers
 
             // Actualizar cantidad
             await _carritoService.ActualizarCantidad(lineaId, cantidad);
-            return RedirectToAction("Index", "Catalogo");
+
+            if (!string.IsNullOrEmpty(returnUrl))
+                return Redirect(returnUrl);
+            else
+                return RedirectToAction("Index", "Catalogo");
             //return Json(new { success = true });
         }
 
         [HttpPost]
-        public async Task<IActionResult> EliminarLinea(int lineaId)
+        public async Task<IActionResult> EliminarLinea(int lineaId, string returnUrl)
         {
             await _carritoService.EliminarLinea(lineaId);
 
-            return RedirectToAction("Index", "Catalogo");
+            if (!string.IsNullOrEmpty(returnUrl))
+                return Redirect(returnUrl);
+            else
+                return RedirectToAction("Index", "Catalogo");            
             //return Json(new { success = true });
         }
     }
