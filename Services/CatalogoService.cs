@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
-using QueseriaSoftware.Models;
 using QueseriaSoftware.ViewModels;
 using System.Security.Claims;
 
@@ -10,11 +9,13 @@ namespace QueseriaSoftware.Services
     {
         private readonly AppDbContext _context;
         private readonly ICarritoService _carritoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CatalogoService(AppDbContext context, ICarritoService carritoService)
+        public CatalogoService(AppDbContext context, ICarritoService carritoService, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _carritoService = carritoService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<int> ConsultarDisponibilidad(int productoId)
@@ -25,8 +26,10 @@ namespace QueseriaSoftware.Services
 
         public async Task<List<ProductoViewModel>> ConsultarCatalogo(string busqueda)
         {
+            int userId = GetCurrentUserId();
+
             var carrito = await _context.CarritoLineas
-                .Where(cl => cl.Carrito.IdUsuario == 1)
+                .Where(cl => cl.Carrito.IdUsuario == userId)
                 .ToListAsync();
 
             var query = _context.Productos
@@ -67,6 +70,15 @@ namespace QueseriaSoftware.Services
             }
 
             return productos;
+        }
+
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+                throw new Exception("No se encontró el ID del usuario.");
+
+            return int.Parse(userIdClaim.Value);
         }
     }
 }

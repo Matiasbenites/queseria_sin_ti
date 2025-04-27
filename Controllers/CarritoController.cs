@@ -24,7 +24,10 @@ namespace QueseriaSoftware.Controllers
 
         public async Task<IActionResult> Checkout()
         {
-            var carrito = await _carritoService.ObtenerCarritoCompleto("1");
+            string usuarioId = User.Identity.IsAuthenticated
+            ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+            : HttpContext.Session.Id;
+            var carrito = await _carritoService.ObtenerCarritoCompleto(usuarioId);
             return View(carrito);
         }
 
