@@ -71,6 +71,40 @@ body {
         background-color: #68b16d;
     }
 
+/* Botón amarillo */
+.btn-yellow {
+    background-color: #f4c542; /* Amarillo suave similar en saturación al verde */
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+    .btn-yellow:hover {
+        color: white;
+        background-color: #e0b53b; /* Un poco más oscuro al hacer hover */
+    }
+
+/* Botón rojo */
+.btn-red {
+    background-color: #e06d6d; /* Rojo suave similar en saturación */
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+    .btn-red:hover {
+        color: white;
+        background-color: #cc5f5f; /* Más oscuro al hacer hover */
+    }
+
 /* Color gris claro para los floating labels cuando el input no está enfocado ni tiene valor */
 .form-floating > label {
     color: #6c757d;

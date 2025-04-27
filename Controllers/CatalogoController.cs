@@ -18,7 +18,7 @@ namespace QueseriaSoftware.Controllers
             AgregarProductoViewModel catalogo = new AgregarProductoViewModel
             {
                 Busqueda = busqueda,
-                Productos = await _catalogoService.ConsultarCatalogo(busqueda)
+                Productos = await _catalogoService.ConsultarCatalogo(busqueda),
             };
             return View(catalogo);
         }

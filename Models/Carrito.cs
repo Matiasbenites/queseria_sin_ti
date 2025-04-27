@@ -9,5 +9,6 @@ namespace QueseriaSoftware.Models
 
         [ForeignKey("IdUsuario")]
         public Usuario? Usuario { get; set; }
+        public ICollection<CarritoLinea> Lineas { get; set; } = new List<CarritoLinea>();
     }
 }
