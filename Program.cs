@@ -15,6 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUsuariosService,UsuariosService>();
 builder.Services.AddScoped<IProductosService,ProductosService>();
 builder.Services.AddScoped<ISesionService,SesionService>();
+builder.Services.AddScoped<ICatalogoService,CatalogoService>();
 
 builder.Services.AddAuthentication("QueseriaCookiesAuth")
     .AddCookie("QueseriaCookiesAuth", options =>

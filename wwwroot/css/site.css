@@ -93,3 +93,18 @@ body {
         text-align: center;
         text-decoration: none;
     }
+
+/* Caja blanca arriba de cada producto */
+.producto-box {
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+/* Lineas de texto con borde abajo */
+.producto-line {
+    border-bottom: 1px solid #999;
+    padding-bottom: 5px;
+    font-size: 1rem;
+    color: #333;
+}
