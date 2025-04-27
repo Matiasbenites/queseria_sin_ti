@@ -23,25 +23,7 @@
             {
                 @foreach (var producto in Model.Productos)
                 {
-                    <div class="form-box p-3" style="background-color: #d9d9d9; padding: 20px;">
-                        <div class="producto-box mb-3" style="height: 200px; background-color: white;"></div>
-
-                        <div class="producto-line mb-2">
-                            producto: @producto.Nombre
-                        </div>
-                        <div class="producto-line mb-2">
-                            descripción: @producto.Descripcion
-                        </div>
-                        <div class="producto-line mb-3">
-                            precio: $@producto.Precio.ToString("N2")
-                        </div>
-
-                        <form asp-action="AgregarAlPedido" method="post" class="d-flex align-items-center gap-2">
-                            <input type="hidden" name="ProductoId" value="@producto.Id" />
-                            <input type="number" name="Cantidad" class="form-control input-gray" placeholder="Cantidad" style="width: 100px; margin-bottom: 0;" min="1" />
-                            <button type="submit" class="btn-green" style="width: 150px;">Agregar al pedido</button>
-                        </form>
-                    </div>
+                    @await Html.PartialAsync("_ProductoCard", producto)
                 }
             }
             else
