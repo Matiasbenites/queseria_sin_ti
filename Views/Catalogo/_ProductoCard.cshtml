@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <form asp-action="AgregarAlPedido" method="post" class="d-flex align-items-center gap-2 mt-3">
+    <form asp-action="AgregarAlPedido" method="post" class="d-flex align-items-center gap-2 mt-3 form-agregar-al-pedido">
         <input type="hidden" name="ProductoId" value="@Model.Id" />
         <input type="number" name="Cantidad" class="form-control input-gray" placeholder="Cantidad" style="width: 100px; margin-bottom: 0; background-color: white;" min="1" />
         <button type="submit" class="btn-green" style="width: 150px;">Agregar al pedido</button>
