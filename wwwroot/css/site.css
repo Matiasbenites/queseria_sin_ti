@@ -94,6 +94,8 @@ body {
         text-decoration: none;
     }
 
+/*SECCION PRODUCTO CARD*/
+
 /* Caja blanca arriba de cada producto */
 .producto-box {
     width: 100%;
@@ -107,4 +109,8 @@ body {
     padding-bottom: 5px;
     font-size: 1rem;
     color: #333;
+}
+
+.producto-body {
+    background-color: white;
 }

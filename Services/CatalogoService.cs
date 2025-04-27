@@ -25,6 +25,7 @@ namespace QueseriaSoftware.Services
                         Precio = p.Precio,
                         Descripcion = p.Descripcion,
                         Id = p.Id,
+                        ImagenUrl = p.ImgUrl != null ? p.ImgUrl : "/imagenes/sin-imagen.jpg"
                     })
                     .ToListAsync();
             }
@@ -37,6 +38,7 @@ namespace QueseriaSoftware.Services
                     Precio = p.Precio,
                     Descripcion = p.Descripcion,
                     Id = p.Id,
+                    ImagenUrl = p.ImgUrl != null ? p.ImgUrl : "/imagenes/sin-imagen.jpg"
                 })
                 .Take(5)
                 .ToListAsync();
