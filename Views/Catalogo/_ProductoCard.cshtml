@@ -18,16 +18,17 @@
 
     @if (Model.CantidadEnCarrito.HasValue && Model.CantidadEnCarrito.Value > 0)
     {
-        <form asp-action="ActualizarProducto" asp-controller="Carrito" method="post" class="d-flex align-items-center gap-2 mt-3 form-actualizar-al-pedido">
-            <input type="hidden" name="ProductoId" value="@Model.Id" />
-            <input type="number" name="Cantidad" class="form-control input-gray cantidad-input" placeholder="Cantidad" style="width: 100px; margin-bottom: 0; background-color: white;" min="0" value="@Model.CantidadEnCarrito" />
+        <form asp-action="ActualizarCantidad" asp-controller="Carrito" method="post" class="d-flex align-items-center gap-2 mt-3 form-actualizar-al-pedido">
+            <input type="hidden" name="lineaId" value="@Model.CarritoLineaId" />
+            <input type="number" name="cantidad" class="form-control input-gray cantidad-input" placeholder="Cantidad" style="width: 100px; margin-bottom: 0; background-color: white;" min="0" value="@Model.CantidadEnCarrito" />
             <button type="submit" class="btn-yellow" style="width: 150px;">Actualizar</button>
         </form>
 
-        <form asp-action="EliminarProducto" asp-controller="Carrito" method="post" class="mt-2">
-            <input type="hidden" name="ProductoId" value="@Model.Id" />
+        <form asp-action="EliminarLinea" asp-controller="Carrito" method="post" class="mt-2">
+            <input type="hidden" name="lineaId" value="@Model.CarritoLineaId" />
             <button type="submit" class="btn-red" style="width: 150px;">Eliminar</button>
         </form>
+
     }
     else
     {

@@ -51,19 +51,21 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
+                                    location.reload();
+
                                     // Mostrar mensaje de éxito
                                     mostrarMensaje('Producto agregado al carrito correctamente', 'success');
 
-                                    // Resetear input de cantidad
-                                    cantidadInput.value = 1;
+                                    //// Resetear input de cantidad
+                                    //cantidadInput.value = 1;
 
-                                    // Actualizar contador del carrito si existe
-                                    if (data.totalItems) {
-                                        const cartCounter = document.querySelector('.cart-counter');
-                                        if (cartCounter) {
-                                            cartCounter.textContent = data.totalItems;
-                                        }
-                                    }
+                                    //// Actualizar contador del carrito si existe
+                                    //if (data.totalItems) {
+                                    //    const cartCounter = document.querySelector('.cart-counter');
+                                    //    if (cartCounter) {
+                                    //        cartCounter.textContent = data.totalItems;
+                                    //    }
+                                    //}
                                 } else {
                                     mostrarMensaje(data.message || 'Error al agregar el producto', 'error');
                                 }
@@ -97,43 +99,6 @@
             })
             .catch(error => {
                 console.error('Error al verificar disponibilidad:', error);
-            });
-    }
-
-    // Función para agregar productos al carrito
-    function agregarAlCarrito(productoId, cantidad) {
-        debugger;
-        const formData = new FormData();
-        formData.append('productoId', productoId);
-        formData.append('cantidad', cantidad);
-
-        fetch('/Carrito/AgregarProducto', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Mostrar mensaje de éxito
-                    mostrarMensaje('Producto agregado al carrito correctamente', 'success');
-
-                    // Resetear input de cantidad
-                    cantidadInput.value = 1;
-
-                    // Actualizar contador del carrito si existe
-                    if (data.totalItems) {
-                        const cartCounter = document.querySelector('.cart-counter');
-                        if (cartCounter) {
-                            cartCounter.textContent = data.totalItems;
-                        }
-                    }
-                } else {
-                    mostrarMensaje(data.message || 'Error al agregar el producto', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error al agregar al carrito:', error);
-                alert('Error al agregar el producto al carrito. Intente nuevamente.');
             });
     }
 

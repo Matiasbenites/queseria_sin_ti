@@ -57,7 +57,14 @@ namespace QueseriaSoftware.Services
             foreach (var producto in productos)
             {
                 producto.CantidadEnCarrito = carrito
-                    .FirstOrDefault(c => c.ProductoId == producto.Id)?.Cantidad;
+                    .FirstOrDefault(c => c.ProductoId == producto.Id)?
+                    .Cantidad;
+                if(producto.CantidadEnCarrito != null)
+                {
+                    producto.CarritoLineaId = carrito
+                        .FirstOrDefault(c => c.ProductoId == producto.Id)
+                        .Id;
+                }
             }
 
             return productos;

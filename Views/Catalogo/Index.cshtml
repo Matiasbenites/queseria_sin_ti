@@ -37,16 +37,22 @@
         </div>
         @if (Model.Productos != null && Model.Productos.Any(p => p.CantidadEnCarrito > 0))
         {
-            <div class="col-12 mt-4 d-flex justify-content-end align-items-end">
-                <a href="/Carrito/Checkout" class="btn btn-primary" style="padding: 10px 20px;">Comprar</a>
-            </div>
-        }
 
-        <div class="col-12 mt-4 d-flex justify-content-start align-items-start">
-            <div class="menu-btn-container">
+            <div class="col-6 mt-4">
                 <a asp-controller="Home" asp-action="Index" class="btn-green">Volver al inicio</a>
             </div>
-        </div>
+            <div class="col-6 mt-4 d-flex justify-content-end">
+                <a href="/Carrito/Checkout" class="btn-green" style="width: initial;">Comprar</a>
+            </div>
+        }
+        else
+        {
+            <div class="col-12 mt-4 d-flex justify-content-start align-items-start">
+                <div class="menu-btn-container">
+                    <a asp-controller="Home" asp-action="Index" class="btn-green">Volver al inicio</a>
+                </div>
+            </div>
+        }
     </div>
 </div>
 

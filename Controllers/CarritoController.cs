@@ -21,9 +21,23 @@ namespace QueseriaSoftware.Controllers
             return View();
         }
 
+
+        public IActionResult Checkout()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> AgregarProducto(int productoId, int cantidad)
         {
+            if (cantidad <= 0)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = $"Por favor ingrese una cantidad de productos a agregar"
+                });
+            }
             // Verificar stock antes de agregar al carrito
             var stockDisponible = await _catalogoService.ConsultarDisponibilidad(productoId);
 
@@ -73,8 +87,8 @@ namespace QueseriaSoftware.Controllers
 
             // Actualizar cantidad
             await _carritoService.ActualizarCantidad(lineaId, cantidad);
-
-            return Json(new { success = true });
+            return RedirectToAction("Index", "Catalogo");
+            //return Json(new { success = true });
         }
 
         [HttpPost]
@@ -82,7 +96,8 @@ namespace QueseriaSoftware.Controllers
         {
             await _carritoService.EliminarLinea(lineaId);
 
-            return Json(new { success = true });
+            return RedirectToAction("Index", "Catalogo");
+            //return Json(new { success = true });
         }
     }
 }

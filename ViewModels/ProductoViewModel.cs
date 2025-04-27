@@ -8,7 +8,7 @@
         public decimal Precio { get; set; }
         public required string ImagenUrl { get; set; }
         public int Stock { get; set; }
-
+        public int? CarritoLineaId { get; set; }
         public int? CantidadEnCarrito { get; set; }
 
     }
