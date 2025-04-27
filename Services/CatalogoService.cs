@@ -13,6 +13,12 @@ namespace QueseriaSoftware.Services
             _context = context;
         }
 
+        public async Task<int> ConsultarDisponibilidad(int productoId)
+        {
+            var producto = await _context.Productos.FindAsync(productoId);
+            return producto?.Stock ?? 0;
+        }
+
         public async Task<List<ProductoViewModel>> ConsultarCatalogo(string busqueda)
         {
             if (!String.IsNullOrEmpty(busqueda))
@@ -25,7 +31,8 @@ namespace QueseriaSoftware.Services
                         Precio = p.Precio,
                         Descripcion = p.Descripcion,
                         Id = p.Id,
-                        ImagenUrl = p.ImgUrl != null ? p.ImgUrl : "/imagenes/sin-imagen.jpg"
+                        ImagenUrl = p.ImgUrl != null ? p.ImgUrl : "/imagenes/sin-imagen.jpg",
+                        Stock = p.Stock
                     })
                     .ToListAsync();
             }
@@ -38,7 +45,8 @@ namespace QueseriaSoftware.Services
                     Precio = p.Precio,
                     Descripcion = p.Descripcion,
                     Id = p.Id,
-                    ImagenUrl = p.ImgUrl != null ? p.ImgUrl : "/imagenes/sin-imagen.jpg"
+                    ImagenUrl = p.ImgUrl != null ? p.ImgUrl : "/imagenes/sin-imagen.jpg",
+                    Stock = p.Stock
                 })
                 .Take(5)
                 .ToListAsync();

@@ -22,5 +22,18 @@ namespace QueseriaSoftware.Controllers
             };
             return View(catalogo);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ConsultarDisponibilidad(int productoId, int cantidad)
+        {
+            // Obtener stock actual del producto
+            var stockDisponible = await _catalogoService.ConsultarDisponibilidad(productoId);
+
+            return Json(new
+            {
+                disponible = cantidad <= stockDisponible,
+                stockDisponible = stockDisponible
+            });
+        }
     }
 }
