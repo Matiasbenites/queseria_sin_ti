@@ -5,7 +5,7 @@ namespace QueseriaSoftware.ViewModels
     public class LoginViewModel
     {
         [Required(ErrorMessage = "El usuario es obligatorio.")]
-        [Display(Name = "Nombre de Usuario")]
+        [Display(Name = "Correo")]
         public string? Username { get; set; }
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]

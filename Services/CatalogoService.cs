@@ -24,7 +24,7 @@ namespace QueseriaSoftware.Services
             return producto?.Stock ?? 0;
         }
 
-        public async Task<List<ProductoViewModel>> ConsultarCatalogo(string busqueda)
+        public async Task<List<ProductoViewModel>> ConsultarCatalogo(string? busqueda = null)
         {
             int userId = GetCurrentUserId();
 

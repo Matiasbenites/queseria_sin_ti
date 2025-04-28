@@ -67,7 +67,7 @@ namespace QueseriaSoftware.Services
             return viewModel;
         }
 
-        public async Task AgregarProducto(string usuarioId, int productoId, int cantidad)
+        public async Task AgregarProductoCarrito(string usuarioId, int productoId, int cantidad)
         {
             var carrito = await ObtenerCarrito(usuarioId);
 

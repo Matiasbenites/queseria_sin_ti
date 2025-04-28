@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QueseriaSoftware.Data;
 
@@ -11,9 +12,11 @@ using QueseriaSoftware.Data;
 namespace QueseriaSoftware.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250427212027_PendingChanges")]
+    partial class PendingChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +49,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("Carritos", (string)null);
+                    b.ToTable("Carritos");
                 });
 
             modelBuilder.Entity("QueseriaSoftware.Models.CarritoLinea", b =>
@@ -75,7 +78,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasIndex("ProductoId");
 
-                    b.ToTable("CarritoLineas", (string)null);
+                    b.ToTable("CarritoLineas");
                 });
 
             modelBuilder.Entity("QueseriaSoftware.Models.Categoria", b =>
@@ -98,7 +101,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categoria", (string)null);
+                    b.ToTable("Categoria");
 
                     b.HasData(
                         new
@@ -130,7 +133,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Marca", (string)null);
+                    b.ToTable("Marca");
 
                     b.HasData(
                         new
@@ -187,7 +190,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasIndex("IdMarca");
 
-                    b.ToTable("Productos", (string)null);
+                    b.ToTable("Productos");
 
                     b.HasData(
                         new
@@ -259,7 +262,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -337,7 +340,7 @@ namespace QueseriaSoftware.Migrations
                     b.HasIndex("NombreDeUsuario")
                         .IsUnique();
 
-                    b.ToTable("Usuarios", (string)null);
+                    b.ToTable("Usuarios");
 
                     b.HasData(
                         new
@@ -378,7 +381,7 @@ namespace QueseriaSoftware.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("UsuarioRoles", (string)null);
+                    b.ToTable("UsuarioRoles");
 
                     b.HasData(
                         new

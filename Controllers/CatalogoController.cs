@@ -18,13 +18,13 @@ namespace QueseriaSoftware.Controllers
             AgregarProductoViewModel catalogo = new AgregarProductoViewModel
             {
                 Busqueda = busqueda,
-                Productos = await _catalogoService.ConsultarCatalogo(busqueda),
+                Productos = await _catalogoService.ConsultarCatalogo(),
             };
             return View(catalogo);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConsultarDisponibilidad(int productoId, int cantidad)
+        public async Task<IActionResult> ConsultarDisponible(int productoId, int cantidad)
         {
             // Obtener stock actual del producto
             var stockDisponible = await _catalogoService.ConsultarDisponibilidad(productoId);

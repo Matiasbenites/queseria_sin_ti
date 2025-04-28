@@ -7,7 +7,7 @@
 
         if (isNaN(cantidad) || cantidad < 1) {
             e.preventDefault(); // Evita el envío del formulario
-            alert('Por favor ingrese una cantidad válida mayor o igual a 1.');
+            //alert('Por favor ingrese una cantidad válida mayor o igual a 1.');
             cantidadInput.focus();
         }
     });
@@ -24,7 +24,7 @@
             const cantidadSolicitada = parseInt(this.value);
 
             // Llamada AJAX para verificar disponibilidad
-            consultarDisponibilidad(productoId, cantidadSolicitada, this);
+            consultarDisponible(productoId, cantidadSolicitada, this);
         });
     });
 
@@ -38,7 +38,7 @@
             const cantidad = parseInt(cantidadInput.value);
 
             // Verificar disponibilidad antes de agregar al carrito
-            fetch(`/Catalogo/ConsultarDisponibilidad?productoId=${productoId}&cantidad=${cantidad}`)
+            fetch(`/Catalogo/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.disponible) {
@@ -88,12 +88,12 @@
 
 
     // Función para consultar disponibilidad mediante AJAX
-    function consultarDisponibilidad(productoId, cantidad, inputElement) {
-        fetch(`/Catalogo/ConsultarDisponibilidad?productoId=${productoId}&cantidad=${cantidad}`)
+    function consultarDisponible(productoId, cantidad, inputElement) {
+        fetch(`/Catalogo/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
             .then(response => response.json())
             .then(data => {
                 if (!data.disponible) {
-                    alert(`No hay suficiente stock. Stock disponible: ${data.stockDisponible}`);
+                    //alert(`No hay suficiente stock. Stock disponible: ${data.stockDisponible}`);
                     inputElement.value = data.stockDisponible > 0 ? data.stockDisponible : 1;
                 }
             })

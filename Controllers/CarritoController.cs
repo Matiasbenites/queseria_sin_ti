@@ -54,22 +54,19 @@ namespace QueseriaSoftware.Controllers
                 });
             }
 
-            // Obtener ID del usuario actual o usar un ID de sesión para carritos anónimos
+            // Obtener ID del usuario actual
             string usuarioId = User.Identity.IsAuthenticated
                 ? User.FindFirst(ClaimTypes.NameIdentifier).Value
                 : HttpContext.Session.Id;
 
             // Agregar al carrito
-            await _carritoService.AgregarProducto(usuarioId, productoId, cantidad);
+            await _carritoService.AgregarProductoCarrito(usuarioId, productoId, cantidad);
 
-            // Obtener el total de items en el carrito para actualizar el contador en la UI
-            var totalItems = await _carritoService.ObtenerTotalItems(usuarioId);
 
             return Json(new
             {
                 success = true,
                 message = "Producto agregado al carrito correctamente",
-                totalItems = totalItems
             });
         }
 

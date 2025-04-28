@@ -7,7 +7,7 @@ namespace QueseriaSoftware.Services
     {
         Task<Carrito> ObtenerCarrito(string usuarioId);
         Task<CarritoViewModel> ObtenerCarritoCompleto(string usuarioId);
-        Task AgregarProducto(string usuarioId, int productoId, int cantidad);
+        Task AgregarProductoCarrito(string usuarioId, int productoId, int cantidad);
         Task ActualizarCantidad(int lineaId, int cantidad);
         Task EliminarLinea(int lineaId);
         Task<int> ObtenerTotalItems(string usuarioId);
