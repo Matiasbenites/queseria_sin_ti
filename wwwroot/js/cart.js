@@ -93,7 +93,7 @@
             .then(response => response.json())
             .then(data => {
                 if (!data.disponible) {
-                    //alert(`No hay suficiente stock. Stock disponible: ${data.stockDisponible}`);
+                    alert(`No hay suficiente stock. Stock disponible: ${data.stockDisponible}`);
                     inputElement.value = data.stockDisponible > 0 ? data.stockDisponible : 1;
                 }
             })
