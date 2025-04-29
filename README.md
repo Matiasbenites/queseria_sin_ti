@@ -9,8 +9,10 @@
 
 ## Documentación adjunta
 
-Se puede consultar el informe del proyecto descargandolo desde aqui:  
-[📄 Ver Informe (PDF)](https://github.com/user-attachments/files/19951074/INGII-QueseriaDeMiSinTiSoftware-2025.pdf)
+Se puede consultar el informe del proyecto descargandolo desde como PDF o tambien se puede visualizar desde el docs donde fue trabajado:  
+[📄 TC_E1_Grupo18_ISII (PDF)](https://github.com/user-attachments/files/19951074/INGII-QueseriaDeMiSinTiSoftware-2025.pdf)
+
+[📄 TC_E1_Grupo18_ISII](https://docs.google.com/document/d/1q1q4YK9CjiVzTxsMG3UJMWTDZiDApDBMp7EpSyL-W08/edit?tab=t.0)
 
 ---
 
