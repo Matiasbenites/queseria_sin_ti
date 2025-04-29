@@ -10,7 +10,7 @@
 ## Documentación adjunta
 
 Se puede consultar el informe del proyecto descargandolo desde aqui:  
-[📄 Ver Informe (PDF)](https://github.com/user-attachments/files/19951032/TrabajoDeCampoQueseriaSoftware-2025.pdf)
+[📄 Ver Informe (PDF)](https://github.com/user-attachments/files/19951074/INGII-QueseriaDeMiSinTiSoftware-2025.pdf)
 
 ---
 
