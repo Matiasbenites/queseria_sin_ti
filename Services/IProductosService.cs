@@ -6,6 +6,6 @@ namespace QueseriaSoftware.Services
     {
         Task<List<ProductoViewModel>> ConsultarCatalogo();
 
-        Task<int> ConsultarDisponibilidad(int productoId);
+        Task<bool> ConsultarDisponibilidad(int productoId, int cantidad);
     }
 }

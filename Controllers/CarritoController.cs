@@ -43,14 +43,14 @@ namespace QueseriaSoftware.Controllers
                 });
             }
             // Verificar stock antes de agregar al carrito
-            var stockDisponible = await _productosService.ConsultarDisponibilidad(productoId);
+            var disponible = await _productosService.ConsultarDisponibilidad(productoId, cantidad);
 
-            if (cantidad > stockDisponible)
+            if (!disponible)
             {
                 return Json(new
                 {
                     success = false,
-                    message = $"No hay suficiente stock. Stock disponible: {stockDisponible}"
+                    message = $"No hay suficiente stock"
                 });
             }
 
@@ -75,14 +75,14 @@ namespace QueseriaSoftware.Controllers
         {
             // Verificar stock antes de actualizar
             var linea = await _carritoService.ObtenerLineaCarrito(lineaId);
-            var stockDisponible = await _productosService.ConsultarDisponibilidad(linea.ProductoId);
+            var disponible = await _productosService.ConsultarDisponibilidad(linea.ProductoId, cantidad);
 
-            if (cantidad > stockDisponible)
+            if (!disponible)
             {
                 return Json(new
                 {
                     success = false,
-                    message = $"No hay suficiente stock. Stock disponible: {stockDisponible}"
+                    message = $"No hay suficiente stock."
                 });
             }
 

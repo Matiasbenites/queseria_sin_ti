@@ -12,22 +12,6 @@
         }
     });
 
-
-    // Seleccionar todos los inputs de cantidad
-    const cantidadInputs = document.querySelectorAll('.cantidad-input');
-
-    // Agregar event listener a cada input
-    cantidadInputs.forEach(input => {
-        input.addEventListener('change', function () {
-            const form = this.closest('.form-agregar-al-pedido');
-            const productoId = form.querySelector('input[name="ProductoId"]').value;
-            const cantidadSolicitada = parseInt(this.value);
-
-            // Llamada AJAX para verificar disponibilidad
-            consultarDisponible(productoId, cantidadSolicitada, this);
-        });
-    });
-
     // Validar también al enviar el formulario
     const formularios = document.querySelectorAll('.form-agregar-al-pedido');
     formularios.forEach(form => {
@@ -41,7 +25,8 @@
             fetch(`/Productos/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.disponible) {
+                    console.log(data);
+                    if (data.stockDisponible) {
                         // Si hay stock disponible, agregar al carrito con AJAX
                         const formData = new FormData(this);
                         fetch('/Carrito/AgregarProducto', {
@@ -54,18 +39,7 @@
                                     location.reload();
 
                                     // Mostrar mensaje de éxito
-                                    mostrarMensaje('Producto agregado al carrito correctamente', 'success');
-
-                                    //// Resetear input de cantidad
-                                    //cantidadInput.value = 1;
-
-                                    //// Actualizar contador del carrito si existe
-                                    //if (data.totalItems) {
-                                    //    const cartCounter = document.querySelector('.cart-counter');
-                                    //    if (cartCounter) {
-                                    //        cartCounter.textContent = data.totalItems;
-                                    //    }
-                                    //}
+                                    mostrarMensaje('Producto agregado al carrito', 'success');
                                 } else {
                                     mostrarMensaje(data.message || 'Error al agregar el producto', 'error');
                                 }
@@ -75,8 +49,8 @@
                                 mostrarMensaje('Error al procesar la solicitud', 'error');
                             });
                     } else {
-                        mostrarMensaje(`No hay suficiente stock. Stock disponible: ${data.stockDisponible}`, 'error');
-                        cantidadInput.value = data.stockDisponible > 0 ? data.stockDisponible : 1;
+                        mostrarMensaje(`No hay suficiente stock del producto seleccionado`, 'error');
+                        cantidadInput.value = 1;
                     }
                 })
                 .catch(error => {

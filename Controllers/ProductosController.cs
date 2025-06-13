@@ -29,12 +29,11 @@ namespace QueseriaSoftware.Controllers
         public async Task<IActionResult> ConsultarDisponible(int productoId, int cantidad)
         {
             // Obtener stock actual del producto
-            var stockDisponible = await _productosService.ConsultarDisponibilidad(productoId);
+            var disponible = await _productosService.ConsultarDisponibilidad(productoId, cantidad);
 
-            return Json(new
+            return Ok(new
             {
-                disponible = cantidad <= stockDisponible,
-                stockDisponible = stockDisponible
+                stockDisponible = disponible
             });
         }
 

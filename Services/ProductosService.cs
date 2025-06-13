@@ -17,10 +17,16 @@ namespace QueseriaSoftware.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<int> ConsultarDisponibilidad(int productoId)
+        public async Task<bool> ConsultarDisponibilidad(int productoId, int cantidad)
         {
             var producto = await _context.Productos.FindAsync(productoId);
-            return producto?.Stock ?? 0;
+
+            if (producto != null && producto.Stock > cantidad)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<List<ProductoViewModel>> ConsultarCatalogo()
