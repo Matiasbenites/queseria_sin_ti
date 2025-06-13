@@ -10,11 +10,13 @@ namespace QueseriaSoftware.Services
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICarritoService _carritoService;
 
-        public ProductosService(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public ProductosService(AppDbContext context, IHttpContextAccessor httpContextAccessor, ICarritoService carritoService)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _carritoService = carritoService;
         }
 
         public async Task<bool> ConsultarDisponibilidad(int productoId, int cantidad)
@@ -33,35 +35,30 @@ namespace QueseriaSoftware.Services
         {
             int userId = GetCurrentUserId();
 
-            var carrito = await _context.CarritoLineas
-                .Where(cl => cl.Carrito.IdUsuario == userId)
-                .ToListAsync();
-
-            var query = _context.Productos
-                .Where(p => p.Activo && p.Stock > 0);
-
-            var productos = await query
+            // Traer productos activos con stock
+            var productos = await _context.Productos
+                .Where(p => p.Activo && p.Stock > 0)
                 .Select(p => new ProductoViewModel
                 {
                     Nombre = p.Nombre,
                     Precio = p.Precio,
                     Descripcion = p.Descripcion,
                     Id = p.Id,
-                    ImagenUrl = p.ImgUrl != null ? p.ImgUrl : "/imagenes/sin-imagen.jpg",
+                    ImagenUrl = p.ImgUrl ?? "/imagenes/sin-imagen.jpg",
                     Stock = p.Stock
                 })
                 .ToListAsync();
 
+            // Obtener productos en el carrito del usuario como diccionario
+            var productosEnCarrito = await _carritoService.ObtenerProductosDelCarrito(userId);
+
+            // Enlazar cada producto del catálogo con la información del carrito (si corresponde)
             foreach (var producto in productos)
             {
-                producto.CantidadEnCarrito = carrito
-                    .FirstOrDefault(c => c.ProductoId == producto.Id)?
-                    .Cantidad;
-                if (producto.CantidadEnCarrito != null)
+                if (productosEnCarrito.TryGetValue(producto.Id, out var linea))
                 {
-                    producto.CarritoLineaId = carrito
-                        .FirstOrDefault(c => c.ProductoId == producto.Id)
-                        .Id;
+                    producto.CantidadEnCarrito = linea.Cantidad;
+                    producto.CarritoLineaId = linea.CarritoLineaId;
                 }
             }
 

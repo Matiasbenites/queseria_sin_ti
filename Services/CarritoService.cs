@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
+using QueseriaSoftware.DTOs;
 using QueseriaSoftware.Models;
 using QueseriaSoftware.ViewModels;
 
@@ -132,19 +133,19 @@ namespace QueseriaSoftware.Services
             return await _context.CarritoLineas.FindAsync(lineaId);
         }
 
-        public async Task<List<Producto>?> ObtenerProductosDelCarrito(int usuarioId)
+        public async Task<Dictionary<int, ProductoEnCarritoDto>> ObtenerProductosDelCarrito(int usuarioId)
         {
-            var carrito = await _context.Carritos
-                .FirstOrDefaultAsync(c => c.IdUsuario == usuarioId);
-
-            if(carrito == null)
-            {
-                return null;
-            }
-
-            
-            throw new NotImplementedException();
+            return await _context.CarritoLineas
+                .Where(cl => cl.Carrito.IdUsuario == usuarioId)
+                .Select(cl => new ProductoEnCarritoDto
+                {
+                    ProductoId = cl.ProductoId,
+                    Cantidad = cl.Cantidad,
+                    CarritoLineaId = cl.Id
+                })
+                .ToDictionaryAsync(cl => cl.ProductoId);
         }
+
     }
 
 }

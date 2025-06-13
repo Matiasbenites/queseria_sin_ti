@@ -1,4 +1,5 @@
-﻿using QueseriaSoftware.Models;
+﻿using QueseriaSoftware.DTOs;
+using QueseriaSoftware.Models;
 using QueseriaSoftware.ViewModels;
 
 namespace QueseriaSoftware.Services
@@ -12,7 +13,6 @@ namespace QueseriaSoftware.Services
         Task EliminarLinea(int lineaId);
         Task<int> ObtenerTotalItems(string usuarioId);
         Task<CarritoLinea> ObtenerLineaCarrito(int lineaId);
-
-        Task<List<Producto>?> ObtenerProductosDelCarrito(int usuarioId);
+        Task<Dictionary<int, ProductoEnCarritoDto>> ObtenerProductosDelCarrito(int usuarioId);
     }
 }
