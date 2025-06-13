@@ -7,12 +7,12 @@ namespace QueseriaSoftware.Controllers
     public class CarritoController : Controller
     {
 
-        private readonly ICatalogoService _catalogoService;
+        private readonly IProductosService _productosService;
         private readonly ICarritoService _carritoService;
 
-        public CarritoController(ICatalogoService catalogoService, ICarritoService carritoService)
+        public CarritoController(IProductosService productosService, ICarritoService carritoService)
         {
-            _catalogoService = catalogoService;
+            _productosService = productosService;
             _carritoService = carritoService;
         }
 
@@ -43,7 +43,7 @@ namespace QueseriaSoftware.Controllers
                 });
             }
             // Verificar stock antes de agregar al carrito
-            var stockDisponible = await _catalogoService.ConsultarDisponibilidad(productoId);
+            var stockDisponible = await _productosService.ConsultarDisponibilidad(productoId);
 
             if (cantidad > stockDisponible)
             {
@@ -75,7 +75,7 @@ namespace QueseriaSoftware.Controllers
         {
             // Verificar stock antes de actualizar
             var linea = await _carritoService.ObtenerLineaCarrito(lineaId);
-            var stockDisponible = await _catalogoService.ConsultarDisponibilidad(linea.ProductoId);
+            var stockDisponible = await _productosService.ConsultarDisponibilidad(linea.ProductoId);
 
             if (cantidad > stockDisponible)
             {

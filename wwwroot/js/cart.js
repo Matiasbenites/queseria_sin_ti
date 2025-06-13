@@ -38,7 +38,7 @@
             const cantidad = parseInt(cantidadInput.value);
 
             // Verificar disponibilidad antes de agregar al carrito
-            fetch(`/Catalogo/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
+            fetch(`/Productos/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.disponible) {
@@ -89,7 +89,7 @@
 
     // Función para consultar disponibilidad mediante AJAX
     function consultarDisponible(productoId, cantidad, inputElement) {
-        fetch(`/Catalogo/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
+        fetch(`/Productos/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
             .then(response => response.json())
             .then(data => {
                 if (!data.disponible) {

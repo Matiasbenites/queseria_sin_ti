@@ -1,159 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using QueseriaSoftware.Data;
-using QueseriaSoftware.Models;
+using QueseriaSoftware.Services;
+using QueseriaSoftware.ViewModels;
 
 namespace QueseriaSoftware.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Cliente, Admin")]
     public class ProductosController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IProductosService _productosService;
 
-        public ProductosController(AppDbContext context)
+        public ProductosController(IProductosService productosService)
         {
-            _context = context;
+            _productosService = productosService;
         }
 
-        // GET: Productos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Catalogo()
         {
-            return View(await _context.Productos.ToListAsync());
+            CatalogoProductosViewModel catalogo = new CatalogoProductosViewModel
+            {
+                Productos = await _productosService.ConsultarCatalogo(),
+            };
+
+            return View(catalogo);
         }
 
-        // GET: Productos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet]
+        public async Task<IActionResult> ConsultarDisponible(int productoId, int cantidad)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            // Obtener stock actual del producto
+            var stockDisponible = await _productosService.ConsultarDisponibilidad(productoId);
 
-            var producto = await _context.Productos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (producto == null)
+            return Json(new
             {
-                return NotFound();
-            }
-
-            return View(producto);
+                disponible = cantidad <= stockDisponible,
+                stockDisponible = stockDisponible
+            });
         }
 
-        // GET: Productos/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: Productos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Stock,Precio")] Producto producto)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(producto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(producto);
-        }
-
-        // GET: Productos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
-            return View(producto);
-        }
-
-        // POST: Productos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Stock,Precio")] Producto producto)
-        {
-            if (id != producto.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(producto);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductoExists(producto.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(producto);
-        }
-
-        // GET: Productoes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var producto = await _context.Productos
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
-
-            return View(producto);
-        }
-
-        // POST: Productos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto != null)
-            {
-                _context.Productos.Remove(producto);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductoExists(int id)
-        {
-            return _context.Productos.Any(e => e.Id == id);
-        }
     }
 }

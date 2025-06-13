@@ -1,4 +1,4 @@
-﻿@model QueseriaSoftware.ViewModels.AgregarProductoViewModel
+﻿@model QueseriaSoftware.ViewModels.CatalogoProductosViewModel
 @{
     ViewData["Title"] = "Agregar/Buscar Producto";
 }
@@ -12,7 +12,7 @@
         <div class="col-12 centered-container mb-4">
             <div class="form-box" style="width: 400px;">
                 <form asp-action="BuscarProducto" method="get" class="d-flex">
-                    <input asp-for="Busqueda" class="form-control input-gray me-2" style="margin-bottom: initial;" placeholder="Buscar producto" />
+                    <input class="form-control input-gray me-2" style="margin-bottom: initial;" placeholder="Buscar producto" />
                     <button type="submit" class="btn-green" style="width: 100px;">Buscar</button>
                 </form>
             </div>
