@@ -33,15 +33,7 @@ namespace QueseriaSoftware.Controllers
             // Obtener productos en el carrito del usuario como diccionario
             var productosEnCarrito = await _carritoService.ObtenerProductosDelCarrito(int.Parse(usuarioId));
 
-            // Enlazar cada producto del catalogo con la información del carrito solo si corresponde
-            foreach (var producto in catalogo.Productos)
-            {
-                if (productosEnCarrito.TryGetValue(producto.Id, out var linea))
-                {
-                    producto.CantidadEnCarrito = linea.Cantidad;
-                    producto.CarritoLineaId = linea.CarritoLineaId;
-                }
-            }
+            _productosService.ActualizarProductosConEstadoDeCarrito(catalogo.Productos, productosEnCarrito);
 
             return View(catalogo);
         }

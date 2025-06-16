@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
+using QueseriaSoftware.DTOs;
 using QueseriaSoftware.DTOs.Resultados;
 using QueseriaSoftware.Models;
 using QueseriaSoftware.ViewModels;
@@ -51,6 +52,18 @@ namespace QueseriaSoftware.Services
                 .ToListAsync();
 
             return productos;
+        }
+
+        public void ActualizarProductosConEstadoDeCarrito(List<ProductoViewModel> productos, Dictionary<int, ProductoEnCarritoDto> productosEnCarrito)
+        {
+            foreach (var producto in productos)
+            {
+                if (productosEnCarrito.TryGetValue(producto.Id, out var linea))
+                {
+                    producto.CantidadEnCarrito = linea.Cantidad;
+                    producto.CarritoLineaId = linea.CarritoLineaId;
+                }
+            }
         }
     }
 }
