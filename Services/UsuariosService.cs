@@ -16,6 +16,11 @@ namespace QueseriaSoftware.Services
             _context = context;
         }
 
-        
+        public async Task<bool> ValidarUsuario(int usuarioId)
+        {
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == usuarioId);
+
+            return usuario != null;
+        }
     }
 }

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QueseriaSoftware.Services;
 using System.Security.Claims;
 
 namespace QueseriaSoftware.Controllers
 {
+    [Authorize(Roles = "Cliente, Admin")]
     public class CarritoController : Controller
     {
 
@@ -34,39 +36,18 @@ namespace QueseriaSoftware.Controllers
         [HttpPost]
         public async Task<IActionResult> AgregarProducto(int productoId, int cantidad)
         {
-            if (cantidad <= 0)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = $"Por favor ingrese una cantidad de productos a agregar"
-                });
-            }
-            // Verificar stock antes de agregar al carrito
-            var disponible = await _productosService.ConsultarDisponibilidad(productoId, cantidad);
-
-            if (!disponible)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = $"No hay suficiente stock"
-                });
-            }
-
             // Obtener ID del usuario actual
             string usuarioId = User.Identity.IsAuthenticated
                 ? User.FindFirst(ClaimTypes.NameIdentifier).Value
                 : HttpContext.Session.Id;
 
             // Agregar al carrito
-            await _carritoService.AgregarProductoCarrito(usuarioId, productoId, cantidad);
-
+            var result = await _carritoService.AgregarProductoCarrito(usuarioId, productoId, cantidad);
 
             return Json(new
             {
-                success = true,
-                message = "Producto agregado al carrito correctamente",
+                success = result.Success,
+                message = result.Message,
             });
         }
 
