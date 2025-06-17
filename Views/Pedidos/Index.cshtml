@@ -1,0 +1,37 @@
+﻿@model IEnumerable<QueseriaSoftware.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Ver Pedidos";
+}
+
+<h1>Ver Pedidos</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+            <th>@Html.DisplayName("Usuario")</th>
+            <th>@Html.DisplayNameFor(model => model.Total)</th>s
+            <th>@Html.DisplayNameFor(model => model.Estado)</th> <!-- Nuevo -->
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>@item.Usuario?.Nombre</td>
+                <td>@item.Total.ToString("C")</td>
+                <td>
+                    @item.Estado
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a> |
+                    <a asp-action="CambiarEstado" asp-route-id="@item.Id">Cambiar Estado</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
