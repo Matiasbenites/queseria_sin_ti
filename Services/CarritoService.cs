@@ -17,25 +17,16 @@ namespace QueseriaSoftware.Services
             _context = context;
             _productosService = productosService;
         }
-        public async Task<Resultado> AgregarProductoCarrito(string usuarioId, int productoId, int cantidad)
+        public async Task<Resultado> AgregarProducto(string usuarioId, int productoId, int cantidad)
         {
             var resultado = new Resultado();
-            
-            //ValidarUsuarioCarrito
-            var validacionCarrito = await ValidarUsuarioCarrito(usuarioId);
 
-            if (!validacionCarrito.Success)
+            var validacionCarrito = await ValidarUsuarioCarritoStock(usuarioId, productoId, cantidad);
+
+            if (validacionCarrito.Carrito == null || !validacionCarrito.Success)
             {
                 resultado.Success = validacionCarrito.Success;
                 resultado.Message = validacionCarrito.Message;
-            }
-
-            bool disponible = await _productosService.ConsultarDisponibilidad(productoId, cantidad);
-
-            if (!disponible)
-            {
-                resultado.Success = false;
-                resultado.Message = "No hay suficiente stock";
                 return resultado;
             }
 
@@ -44,31 +35,33 @@ namespace QueseriaSoftware.Services
             return resultado;
         }
 
-        public async Task<Resultado> AgregarProductoCarritoLinea(Carrito? carrito, string usuarioId, int productoId, int cantidad)
+        public async Task<Resultado> ModificarCantidadProducto(string usuarioId, int productoId, int cantidad)
         {
-            if (carrito == null)
-            {
-                // Crear nuevo carrito si no existe
-                carrito = new Carrito
-                {
-                    IdUsuario = int.Parse(usuarioId),
-                    CreadoEn = DateTime.Now,
-                    Activo = true,
-                    ModificadoEn = DateTime.Now,
-                };
+            var resultado = new Resultado();
+            var validacionCarrito = await ValidarUsuarioCarritoStock(usuarioId, productoId, cantidad);
 
-                _context.Carritos.Add(carrito);
-                await _context.SaveChangesAsync();
+            if (validacionCarrito.Carrito == null || !validacionCarrito.Success)
+            {
+                resultado.Success = validacionCarrito.Success;
+                resultado.Message = validacionCarrito.Message;
+                return resultado;
             }
 
-            // Verificar si el producto ya está en el carrito
-            var lineaExistente = await _context.CarritoLineas
-                .FirstOrDefaultAsync(l => l.CarritoId == carrito.Id && l.ProductoId == productoId);
+            resultado = await ActualizarProductoCarritoLinea(validacionCarrito.Carrito, usuarioId, productoId, cantidad);
+            return resultado;
+        }
 
-            if (lineaExistente != null)
+        public async Task<Resultado> ActualizarProductoCarritoLinea(Carrito? carrito, string usuarioId, int productoId, int cantidad)
+        {
+          
+            // Verificar si el producto ya está en el carrito
+            var productoEnCarrito = carrito.Lineas
+                .FirstOrDefault(l => l.CarritoId == carrito.Id && l.ProductoId == productoId);
+
+            if (productoEnCarrito != null)
             {
                 // Actualizar cantidad si ya existe
-                lineaExistente.Cantidad += cantidad;
+                productoEnCarrito.Cantidad += cantidad;
             }
             else
             {
@@ -87,30 +80,93 @@ namespace QueseriaSoftware.Services
             return new Resultado
             {
                 Success = true,
-                Message = "Producto agregado correctamente"
+                Message = "Carrito actualizado"
             };
         }
 
-
-        public async Task ActualizarCantidad(int lineaId, int cantidad)
+        public async Task<Resultado> AgregarProductoCarritoLinea(Carrito? carrito, string usuarioId, int productoId, int cantidad)
         {
-            var linea = await _context.CarritoLineas.FindAsync(lineaId);
-
-            if (linea != null)
+            if (carrito == null)
             {
-                linea.Cantidad = cantidad;
+                // Si el carrito no existe, se crea uno y se agrega
+                carrito = new Carrito
+                {
+                    IdUsuario = int.Parse(usuarioId),
+                    CreadoEn = DateTime.Now,
+                    Activo = true,
+                    ModificadoEn = DateTime.Now,
+                };
+
+                _context.Carritos.Add(carrito);
+
+                //No existe nueva linea, agregamos al carrito.
+                var nuevaLinea = new CarritoLinea
+                {
+                    CarritoId = carrito.Id,
+                    ProductoId = productoId,
+                    Cantidad = cantidad,
+                };
+
+                _context.CarritoLineas.Add(nuevaLinea);
                 await _context.SaveChangesAsync();
+                return new Resultado
+                {
+                    Success = true,
+                    Message = "Producto agregado correctamente"
+                };
             }
+
+            //Si el carrito existe, se actualiza la linea
+            return await ActualizarProductoCarritoLinea(carrito, usuarioId, productoId, cantidad);
         }
 
-        public async Task EliminarLinea(int lineaId)
+        private async Task<UsuarioCarritoResultado> ValidarUsuarioCarritoStock(string usuarioId, int productoId, int cantidad)
         {
-            var linea = await _context.CarritoLineas.FindAsync(lineaId);
+            var resultado = new UsuarioCarritoResultado();
 
-            if (linea != null)
+            if (usuarioId == null)
             {
-                _context.CarritoLineas.Remove(linea);
-                await _context.SaveChangesAsync();
+                resultado.Success = false;
+                resultado.Message = "Error en el usuario";
+                return resultado;
+            }
+
+            bool disponible = await _productosService.ConsultarDisponibilidad(productoId, cantidad);
+
+            if (!disponible)
+            {
+                resultado.Success = false;
+                resultado.Message = "No hay suficiente stock";
+                return resultado;
+            }
+
+            resultado.Carrito = await ObtenerCarrito(usuarioId);
+            resultado.Success = true;
+
+            return resultado;
+        }
+
+        public async Task<Carrito?> ObtenerCarrito(string usuarioId)
+        {
+            int usuarioIdInt = int.Parse(usuarioId);
+            var carrito = await _context.Carritos
+                .FirstOrDefaultAsync(c => c.IdUsuario == usuarioIdInt && c.Activo);
+
+            return carrito;
+        }
+
+        public async Task EliminarProductoCarrito(string usuarioId, int productoId)
+        {
+            var carrito = await ObtenerCarrito(usuarioId);
+
+            if(carrito != null)
+            {
+                var linea = carrito.Lineas.FirstOrDefault(x => x.ProductoId == productoId);
+                if (linea != null)
+                {
+                    _context.CarritoLineas.Remove(linea);
+                    await _context.SaveChangesAsync();
+                }
             }
         }
 
@@ -139,32 +195,6 @@ namespace QueseriaSoftware.Services
                     CarritoLineaId = cl.Id
                 })
                 .ToDictionaryAsync(cl => cl.ProductoId);
-        }
-
-        private async Task<UsuarioCarritoResultado> ValidarUsuarioCarrito(string usuarioId)
-        {
-            var resultado = new UsuarioCarritoResultado();
-
-            if(usuarioId == null)
-            {
-                resultado.Success = false;
-                resultado.Message = "Error en el usuario";
-                return resultado;
-            }
-
-            resultado.Carrito = await ObtenerCarrito(usuarioId);
-            resultado.Success = true;
-
-            return resultado;
-        }
-
-        public async Task<Carrito?> ObtenerCarrito(string usuarioId)
-        {
-            int usuarioIdInt = int.Parse(usuarioId);
-            var carrito = await _context.Carritos
-                .FirstOrDefaultAsync(c => c.IdUsuario == usuarioIdInt);
-
-            return carrito;
         }
 
         public async Task<CarritoViewModel> ObtenerCarritoCompleto(string usuarioId)

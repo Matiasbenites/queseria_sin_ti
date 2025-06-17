@@ -7,7 +7,7 @@ namespace QueseriaSoftware.Services
 {
     public interface ICarritoService
     {
-        Task<Resultado> AgregarProductoCarrito(string usuarioId, int productoId, int cantidad);
+        Task<Resultado> AgregarProducto(string usuarioId, int productoId, int cantidad);
 
         Task<Resultado> AgregarProductoCarritoLinea(Carrito? carrito, string usuarioId, int productoId, int cantidad);
 
@@ -15,9 +15,9 @@ namespace QueseriaSoftware.Services
 
         Task<CarritoViewModel> ObtenerCarritoCompleto(string usuarioId);
 
-        Task ActualizarCantidad(int lineaId, int cantidad);
+        Task<Resultado> ModificarCantidadProducto(string usuarioId, int productoId, int cantidad);
 
-        Task EliminarLinea(int lineaId);
+        Task EliminarProductoCarrito(string usuarioId, int productoId);
 
         Task<int> ObtenerTotalItems(string usuarioId);
 

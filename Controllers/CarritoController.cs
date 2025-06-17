@@ -11,11 +11,13 @@ namespace QueseriaSoftware.Controllers
 
         private readonly IProductosService _productosService;
         private readonly ICarritoService _carritoService;
+        private readonly IUsuariosService _usuarioService;
 
-        public CarritoController(IProductosService productosService, ICarritoService carritoService)
+        public CarritoController(IProductosService productosService, ICarritoService carritoService, IUsuariosService usuarioService)
         {
             _productosService = productosService;
             _carritoService = carritoService;
+            _usuarioService = usuarioService;
         }
 
         public IActionResult Index()
@@ -42,7 +44,7 @@ namespace QueseriaSoftware.Controllers
                 : HttpContext.Session.Id;
 
             // Agregar al carrito
-            var result = await _carritoService.AgregarProductoCarrito(usuarioId, productoId, cantidad);
+            var result = await _carritoService.AgregarProducto(usuarioId, productoId, cantidad);
 
             return Json(new
             {
@@ -52,35 +54,30 @@ namespace QueseriaSoftware.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarCantidad(int lineaId, int cantidad, string returnUrl)
+        public async Task<IActionResult> ModificarCantidadProducto(int productoId, int cantidad, string returnUrl)
         {
-            // Verificar stock antes de actualizar
-            var linea = await _carritoService.ObtenerLineaCarrito(lineaId);
-            var disponible = await _productosService.ConsultarDisponibilidad(linea.ProductoId, cantidad);
-
-            if (!disponible)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = $"No hay suficiente stock."
-                });
-            }
+            string usuarioId = User.Identity.IsAuthenticated
+            ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+            : HttpContext.Session.Id;
 
             // Actualizar cantidad
-            await _carritoService.ActualizarCantidad(lineaId, cantidad);
+            await _carritoService.ModificarCantidadProducto(usuarioId, productoId, cantidad);
 
             if (!string.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
             else
-                return RedirectToAction("Index", "Catalogo");
+                return RedirectToAction("Index", "Productos");
             //return Json(new { success = true });
         }
 
         [HttpPost]
-        public async Task<IActionResult> EliminarLinea(int lineaId, string returnUrl)
+        public async Task<IActionResult> EliminarProductoCarrito(int productoId, string returnUrl)
         {
-            await _carritoService.EliminarLinea(lineaId);
+            string usuarioId = User.Identity.IsAuthenticated
+                ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+                : HttpContext.Session.Id;
+
+            await _carritoService.EliminarProductoCarrito(usuarioId, productoId);
 
             if (!string.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
