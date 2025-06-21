@@ -46,7 +46,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "pedido",
+    pattern: "pedido",
+    defaults: new { controller = "Pedidos", action = "Index" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run();
+
+
+    
