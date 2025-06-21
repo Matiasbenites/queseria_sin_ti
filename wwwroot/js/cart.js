@@ -49,7 +49,7 @@
                                 mostrarMensaje('Error al procesar la solicitud', 'error');
                             });
                     } else {
-                        mostrarMensaje(`No hay suficiente stock del producto seleccionado`, 'error');
+                        mostrarMensaje(`Por favor indique cantidad`, 'error');
                         cantidadInput.value = 1;
                     }
                 })

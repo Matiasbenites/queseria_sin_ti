@@ -26,7 +26,7 @@ namespace QueseriaSoftware.Controllers
         }
 
 
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> ListadoProductosEnCarrito()
         {
             string usuarioId = User.Identity.IsAuthenticated
             ? User.FindFirst(ClaimTypes.NameIdentifier).Value
@@ -42,7 +42,14 @@ namespace QueseriaSoftware.Controllers
             string usuarioId = User.Identity.IsAuthenticated
                 ? User.FindFirst(ClaimTypes.NameIdentifier).Value
                 : HttpContext.Session.Id;
-
+            if(cantidad >= 0)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Por favor indique cantidad",
+                });
+            }
             // Agregar al carrito
             var result = await _carritoService.AgregarProducto(usuarioId, productoId, cantidad);
 
