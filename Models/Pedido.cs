@@ -54,6 +54,12 @@ namespace QueseriaSoftware.Models
 
         [ForeignKey("IdDireccion")]
         public Direccion? Direccion { get; set; }
+
+        public int IdPago { get; set; }
+
+        [ForeignKey("IdPago")]
+        public Pago? Pago { get; set; }
+
         public ICollection<PedidoDetalle> PedidoDetalles { get; set; } = new List<PedidoDetalle>();
     }
 }
