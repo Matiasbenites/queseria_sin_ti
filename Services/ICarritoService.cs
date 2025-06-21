@@ -13,7 +13,7 @@ namespace QueseriaSoftware.Services
 
         Task<Carrito?> ObtenerCarrito(string usuarioId);
 
-        Task<CarritoViewModel> ObtenerCarritoCompleto(string usuarioId);
+        Task<CarritoViewModel> ObtenerCarritoUsuario(string usuarioId);
 
         Task<Resultado> ModificarCantidadProducto(string usuarioId, int productoId, int cantidad);
 

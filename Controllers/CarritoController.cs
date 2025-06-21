@@ -9,29 +9,20 @@ namespace QueseriaSoftware.Controllers
     public class CarritoController : Controller
     {
 
-        private readonly IProductosService _productosService;
         private readonly ICarritoService _carritoService;
-        private readonly IUsuariosService _usuarioService;
 
-        public CarritoController(IProductosService productosService, ICarritoService carritoService, IUsuariosService usuarioService)
+        public CarritoController(ICarritoService carritoService)
         {
-            _productosService = productosService;
             _carritoService = carritoService;
-            _usuarioService = usuarioService;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
 
-        public async Task<IActionResult> ListadoProductosEnCarrito()
+        public async Task<IActionResult> ObtenerCarritoUsuario()
         {
             string usuarioId = User.Identity.IsAuthenticated
             ? User.FindFirst(ClaimTypes.NameIdentifier).Value
             : HttpContext.Session.Id;
-            var carrito = await _carritoService.ObtenerCarritoCompleto(usuarioId);
+            var carrito = await _carritoService.ObtenerCarritoUsuario(usuarioId);
             return View(carrito);
         }
 

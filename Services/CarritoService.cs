@@ -197,7 +197,7 @@ namespace QueseriaSoftware.Services
                 .ToDictionaryAsync(cl => cl.ProductoId);
         }
 
-        public async Task<CarritoViewModel> ObtenerCarritoCompleto(string usuarioId)
+        public async Task<CarritoViewModel> ObtenerCarritoUsuario(string usuarioId)
         {
             var carrito = await ObtenerCarrito(usuarioId);
 
