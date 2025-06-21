@@ -15,7 +15,12 @@ namespace QueseriaSoftware.Controllers
             _context = context;
         }
 
-        // GET: Pedidos
+        public async Task<IActionResult> CrearPedido()
+        {
+            throw new NotImplementedException();
+        }
+
+        // GET: Pedidos ver pedidos
         public async Task<IActionResult> Index()
         {
             var pedidos = _context.Pedidos.Include(p => p.Usuario);

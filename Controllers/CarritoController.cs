@@ -10,10 +10,12 @@ namespace QueseriaSoftware.Controllers
     {
 
         private readonly ICarritoService _carritoService;
+        private readonly IPedidoService _pedidoService;
 
-        public CarritoController(ICarritoService carritoService)
+        public CarritoController(ICarritoService carritoService, IPedidoService pedidoService)
         {
             _carritoService = carritoService;
+            _pedidoService = pedidoService;
         }
 
 
@@ -23,6 +25,7 @@ namespace QueseriaSoftware.Controllers
             ? User.FindFirst(ClaimTypes.NameIdentifier).Value
             : HttpContext.Session.Id;
             var carrito = await _carritoService.ObtenerCarritoUsuario(usuarioId);
+            carrito.estadoUltimoPedido = await _pedidoService.ObtenerEstadoUltimoPedido(usuarioId);
             return View(carrito);
         }
 

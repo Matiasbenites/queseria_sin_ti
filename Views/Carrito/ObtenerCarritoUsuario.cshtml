@@ -60,9 +60,17 @@
             <div class="col-6">
                 <a asp-controller="Productos" asp-action="Catalogo" class="btn-green" style="width: 200px;">Volver al catálogo</a>
             </div>
-            <div class="col-6 d-flex justify-content-end align-items-end">
-                <button type="submit" class="btn-green" style="width: 200px;">Finalizar compra</button>
-            </div>
+            @if (!String.IsNullOrEmpty(Model.estadoUltimoPedido) && Model.estadoUltimoPedido.Equals("nuevo"))
+            {
+                <div class="col-6 d-flex justify-content-end align-items-end">
+                    <a asp-controller="Pago" asp-action="ConfirmarPedido" class="btn-green" style="width: 200px;">Ir a pagar</a>
+                </div>
+            }else
+            {
+                <div class="col-6 d-flex justify-content-end align-items-end">
+                    <a asp-controller="Pedidos" asp-action="CrearPedido" class="btn-green" style="width: 200px;">Continuar</a>
+                </div>
+            }
         }
         else
         {

@@ -5,5 +5,6 @@
         public int CarritoId { get; set; }
         public List<CarritoLineaViewModel> Lineas { get; set; } = new List<CarritoLineaViewModel>();
         public decimal Total { get; set; }
+        public string? estadoUltimoPedido { get; set; }
     }
 }
