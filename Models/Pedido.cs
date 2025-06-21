@@ -9,9 +9,7 @@ namespace QueseriaSoftware.Models
     {
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
-
-        public int IdUsuario { get; set; }
-        public Usuario? Usuario { get; set; }
+        public DateTime ModificadoEn { get; set; }
 
         // Este es el estado que se guarda en la base de datos
         public string Estado { get; set; } = "Nuevo";
@@ -46,6 +44,11 @@ namespace QueseriaSoftware.Models
         }
 
         public decimal Total { get; set; }
+
+        public int IdUsuario { get; set; }
+
+        [ForeignKey("IdUsuario")]
+        public Usuario? Usuario { get; set; }
 
         public int? IdDireccion { get; set; }
 
