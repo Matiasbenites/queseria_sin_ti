@@ -46,6 +46,11 @@ namespace QueseriaSoftware.Models
         }
 
         public decimal Total { get; set; }
+
+        public int? IdDireccion { get; set; }
+
+        [ForeignKey("IdDireccion")]
+        public Direccion? Direccion { get; set; }
         public ICollection<PedidoDetalle> PedidoDetalles { get; set; } = new List<PedidoDetalle>();
     }
 }
