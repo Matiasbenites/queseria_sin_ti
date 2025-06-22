@@ -6,7 +6,7 @@
 <div class="container my-5">
     <h2 class="mb-4">Seleccioná un medio de pago</h2>
 
-    <form id="formFinalizarPedido" method="post" asp-action="ProcesarPago" asp-controller="Pago">
+    <form id="formFinalizarPedido" method="post" asp-action="ProcesarPago" asp-controller="Pagos">
         <div class="row g-4">
             @foreach (var pago in Model.Pagos)
             {

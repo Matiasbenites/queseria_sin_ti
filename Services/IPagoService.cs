@@ -9,5 +9,7 @@ namespace QueseriaSoftware.Services
         public Task<ResultadoDatosDePago> ObtenerDatosDePago(string usuarioId);
 
         Task<List<PagosViewModel>> ObtenerMediosPago();
+
+        Task<ResultadoConfirmarPedido> ProcesarPago(int medioPagoId, string usuarioId);
     }
 }

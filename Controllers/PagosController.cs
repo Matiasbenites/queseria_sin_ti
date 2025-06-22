@@ -35,5 +35,17 @@ namespace QueseriaSoftware.Controllers
             return View(resultadoDatosDePago.ConfirmarPedidoViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ProcesarPago(int medioPagoId)
+        {
+            var usuarioId = User.Identity.IsAuthenticated
+                ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+                : HttpContext.Session.Id;
+
+            var resultadoPago = _pagoService.ProcesarPago(medioPagoId, usuarioId);
+
+            return View();
+        }
+
     }
 }

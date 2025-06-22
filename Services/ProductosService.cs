@@ -65,5 +65,46 @@ namespace QueseriaSoftware.Services
                 }
             }
         }
+
+        public async Task<Resultado> DescontarStock(ICollection<PedidoDetalle>? productosPedido)
+        {
+            var resultado = new Resultado();
+
+            if (productosPedido == null || !productosPedido.Any())
+            {
+                resultado.Success = false;
+                resultado.Message = "No se encontraron productos en el pedido.";
+                return resultado;
+            }
+
+            foreach (var item in productosPedido)
+            {
+                var producto = await _context.Productos.FindAsync(item.IdProducto);
+
+                if (producto == null)
+                {
+                    resultado.Success = false;
+                    resultado.Message = $"Producto con ID {item.IdProducto} no encontrado.";
+                    return resultado;
+                }
+
+                if (producto.Stock < item.Cantidad)
+                {
+                    resultado.Success = false;
+                    resultado.Message = $"Stock insuficiente para el producto '{producto.Nombre}'. Disponible: {producto.Stock}, requerido: {item.Cantidad}.";
+                    return resultado;
+                }
+
+                producto.Stock -= item.Cantidad;
+                _context.Productos.Update(producto);
+            }
+
+            await _context.SaveChangesAsync();
+
+            resultado.Success = true;
+            resultado.Message = "Stock descontado correctamente.";
+            return resultado;
+        }
+
     }
 }
