@@ -86,10 +86,10 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/Pedido/AgregarDireccionAlPedido',
+                    url: '/Pedidos/AgregarDireccionAlPedido',
                     data: { usuarioId, direccionId },
                     success: function (response) {
-                        alert(response.message);
+                       
                     },
                     error: function () {
                         alert('No se pudo asociar la dirección al pedido.');
@@ -158,7 +158,7 @@
                             const direccionId = $(this).val();
                             const usuarioId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
 
-                            $.post('/Pedido/AgregarDireccionAlPedido', { usuarioId, direccionId });
+                            $.post('/Pedidos/AgregarDireccionAlPedido', { usuarioId, direccionId });
                         });
 
                         // Limpiar form
