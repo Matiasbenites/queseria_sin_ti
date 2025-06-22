@@ -29,16 +29,15 @@
                     </div>
                 }
             </div>
-
-            <div class="mt-4">
-                <button type="submit" id="btnIrAPagar" class="btn btn-primary" disabled>Ir a pagar</button>
+            <div class="d-flex justify-content-end align-items-end mt-3">
+                <button type="submit" id="btnIrAPagar" class="btn btn-green" disabled>Ir a pagar</button>
             </div>
         }
         else
         {
-            <h4>No tenés direcciones guardadas. Agregá una nueva:</h4>
+            <h4 id="sin-direcciones-label">No tenés direcciones guardadas. Agregá una nueva:</h4>
 
-            <div class="row">
+            <div id="form-direccion-wrapper" class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="Calle" class="form-label">Calle</label>
@@ -117,7 +116,7 @@
                     contentType: 'application/json',
                     success: function (resp) {
                         $('#direccionForm').before(`<div class="alert alert-success">${resp.message}</div>`);
-
+                        console.log(resp);
                         // Agregar card nueva
                         const card = `
                         <div class="col">
@@ -135,7 +134,22 @@
                             </div>
                         </div>`;
 
+                        // Crear el contenedor si no existe
+                        if ($('.row.row-cols-1').length === 0) {
+                            const rowWrapper = `
+                                <h4 class="mt-4">Seleccioná una dirección de envío:</h4>
+                                <div class="row row-cols-1 row-cols-md-2 g-4"></div>
+                                <div class="mt-4">
+                                    <button type="submit" id="btnIrAPagar" class="btn btn-green" disabled>Ir a pagar</button>
+                                </div>
+                            `;
+                            $('#direccionForm').prepend(rowWrapper);
+                        }
+
                         $('.row.row-cols-1').append(card);
+
+                        $('#form-direccion-wrapper').hide();
+                        $('#sin-direcciones-label').hide();
 
                         // Rebind al nuevo radio
                         $('.direccion-radio').off('change').on('change', function () {
