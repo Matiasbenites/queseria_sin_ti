@@ -27,6 +27,7 @@ namespace QueseriaSoftware.Models
                 {
                     _estadoPedido = Estado switch
                     {
+                        "Direccion pendiente" => new DireccionPendienteState(),
                         "Nuevo" => new NuevoState(),
                         "En preparación" => new EnPreparacionState(),
                         "Enviado" => new EnviadoState(),
@@ -55,7 +56,7 @@ namespace QueseriaSoftware.Models
         [ForeignKey("IdDireccion")]
         public Direccion? Direccion { get; set; }
 
-        public int IdPago { get; set; }
+        public int? IdPago { get; set; }
 
         [ForeignKey("IdPago")]
         public Pago? Pago { get; set; }

@@ -24,7 +24,5 @@ namespace QueseriaSoftware.Models
 
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio unitario debe ser mayor a cero.")]
         public decimal PrecioUnitario { get; set; }
-
-        
     }
 }

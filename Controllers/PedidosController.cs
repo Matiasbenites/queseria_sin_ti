@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
+using QueseriaSoftware.DTOs.Resultados;
 using QueseriaSoftware.Models;
 using QueseriaSoftware.Services;
 using QueseriaSoftware.ViewModels;
@@ -30,6 +31,11 @@ namespace QueseriaSoftware.Controllers
             : HttpContext.Session.Id;
 
             var resultadoCrearPedido = await _pedidoService.CrearPedido(usuarioId, "Direccion pendiente");
+
+            if (resultadoCrearPedido.PedidoPendienteDePago)
+            {
+                RedirectToAction("ConfirmarPago", "Pago");
+            }
 
             var viewModel = new SeleccionDireccionViewModel
             {

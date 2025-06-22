@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
 using QueseriaSoftware.DTOs;
 using QueseriaSoftware.DTOs.Resultados.Pedido;
+using QueseriaSoftware.Models;
 
 namespace QueseriaSoftware.Services
 {
@@ -23,13 +24,59 @@ namespace QueseriaSoftware.Services
 
         public async Task<ResultadoCrearPedido> CrearPedido(string usuarioId, string estado)
         {
+            ResultadoCrearPedido resultado = new ResultadoCrearPedido();
+
+            var estadoUltimoPedido = await ObtenerEstadoUltimoPedido(usuarioId);
+
+            bool crearPedido = true;
+
+            if (!string.IsNullOrEmpty(estadoUltimoPedido) && estadoUltimoPedido.Equals("Nuevo"))
+            {
+                resultado.PedidoPendienteDePago = true;
+                return resultado;
+            }
+
+            if (!string.IsNullOrEmpty(estadoUltimoPedido) && estadoUltimoPedido.Equals("Direccion pendiente"))
+            {
+                crearPedido = false;
+                resultado.PedidoConDireccionPendiente = true;
+            }
+
             var productosEnCarrito = await _carritoService.ObtenerProductosDelCarrito(int.Parse(usuarioId));
             var total = CalcularTotal(productosEnCarrito);
             var direcciones = await _usuariosService.ObtenerDireccionesDelUsuario(usuarioId);
 
-            ResultadoCrearPedido resultado = new ResultadoCrearPedido();
             resultado.Total = total;
             resultado.Direcciones = direcciones;
+
+            if (crearPedido)
+            {
+                // Crear el pedido sin direccion ni pago
+                var pedido = new Pedido
+                {
+                    Fecha = DateTime.UtcNow,
+                    ModificadoEn = DateTime.UtcNow,
+                    Estado = estado,
+                    Total = total,
+                    IdUsuario = int.Parse(usuarioId),
+                };
+
+                // Agregar los detalles
+                foreach (var item in productosEnCarrito.Values)
+                {
+                    pedido.PedidoDetalles.Add(new PedidoDetalle
+                    {
+                        IdProducto = item.ProductoId,
+                        Cantidad = item.Cantidad,
+                        PrecioUnitario = item.PrecioUnitario
+                    });
+                }
+
+                // Guardar en la base de datos
+                _context.Pedidos.Add(pedido);
+                await _context.SaveChangesAsync();
+            }
+
             return resultado;
         }
 
@@ -37,7 +84,6 @@ namespace QueseriaSoftware.Services
         {
             return productosEnCarrito.Values.Sum(p => p.Cantidad * p.PrecioUnitario);
         }
-
 
         public async Task<string> ObtenerEstadoUltimoPedido(string idUsuario)
         {

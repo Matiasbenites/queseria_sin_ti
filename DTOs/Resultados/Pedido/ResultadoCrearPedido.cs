@@ -7,5 +7,9 @@ namespace QueseriaSoftware.DTOs.Resultados.Pedido
         public decimal Total { get; set; }
 
         public List<DireccionViewModel>? Direcciones { get; set; }
+
+        public bool PedidoPendienteDePago { get; set; }
+
+        public bool PedidoConDireccionPendiente { get; set; }
     }
 }
