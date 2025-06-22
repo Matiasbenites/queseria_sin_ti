@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 section-header">
-            Checkout
+            Lista de productos en carrito
         </div>
 
         @if (Model.Lineas != null && Model.Lineas.Count > 0)
@@ -26,19 +26,19 @@
                                 <tr>
                                     <td>@linea.Nombre</td>
                                     <td>
-                                        <form asp-action="ActualizarCantidad" asp-controller="Carrito" method="post" class="d-flex">
-                                            <input type="hidden" name="LineaId" value="@linea.LineaId" />
-                                            <input type="number" name="Cantidad" value="@linea.Cantidad" min="1" class="form-control input-gray me-2" style="width: 80px; margin-bottom: initial;" />
-                                            <input type="hidden" name="returnUrl" value="@Url.Action("Checkout", "Carrito")" />
+                                        <form asp-action="ModificarCantidadProducto" asp-controller="Carrito" method="post" class="d-flex">
+                                            <input type="hidden" name="productoId" value="@linea.ProductoId" />
+                                            <input type="number" name="cantidad" value="@linea.Cantidad" min="1" class="form-control input-gray me-2" style="width: 80px; margin-bottom: initial;" />
+                                            <input type="hidden" name="returnUrl" value="@Url.Action("ObtenerCarritoUsuario", "Carrito")" />
                                             <button type="submit" class="btn-green" style="width: 100px;">Actualizar</button>
                                         </form>
                                     </td>
                                     <td>$@linea.Precio.ToString("0.00")</td>
                                     <td>$@((linea.Cantidad * linea.Precio).ToString("0.00"))</td>
                                     <td>
-                                        <form asp-action="EliminarLinea" asp-controller="Carrito" method="post">
-                                            <input type="hidden" name="LineaId" value="@linea.LineaId" />
-                                            <input type="hidden" name="returnUrl" value="@Url.Action("Checkout", "Carrito")" />
+                                        <form asp-action="EliminarProductoCarrito" asp-controller="Carrito" method="post">
+                                            <input type="hidden" name="productoId" value="@linea.ProductoId" />
+                                            <input type="hidden" name="returnUrl" value="@Url.Action("ObtenerCarritoUsuario", "Carrito")" />
                                             <button type="submit" class="btn-red" style="width: 100px;">Eliminar</button>
                                         </form>
                                     </td>

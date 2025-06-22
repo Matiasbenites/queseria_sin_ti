@@ -36,7 +36,7 @@ namespace QueseriaSoftware.Controllers
             string usuarioId = User.Identity.IsAuthenticated
                 ? User.FindFirst(ClaimTypes.NameIdentifier).Value
                 : HttpContext.Session.Id;
-            if(cantidad >= 0)
+            if(cantidad <= 0)
             {
                 return Json(new
                 {
@@ -67,7 +67,7 @@ namespace QueseriaSoftware.Controllers
             if (!string.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
             else
-                return RedirectToAction("Index", "Productos");
+                return RedirectToAction("Catalogo", "Productos");
             //return Json(new { success = true });
         }
 
@@ -83,7 +83,7 @@ namespace QueseriaSoftware.Controllers
             if (!string.IsNullOrEmpty(returnUrl))
                 return Redirect(returnUrl);
             else
-                return RedirectToAction("Index", "Catalogo");            
+                return RedirectToAction("Catalogo", "Productos");            
             //return Json(new { success = true });
         }
     }

@@ -23,7 +23,7 @@ namespace QueseriaSoftware.Services
 
             var validacionCarrito = await ValidarUsuarioCarritoStock(usuarioId, productoId, cantidad);
 
-            if (validacionCarrito.Carrito == null || !validacionCarrito.Success)
+            if (!validacionCarrito.Success)
             {
                 resultado.Success = validacionCarrito.Success;
                 resultado.Message = validacionCarrito.Message;
@@ -40,7 +40,7 @@ namespace QueseriaSoftware.Services
             var resultado = new Resultado();
             var validacionCarrito = await ValidarUsuarioCarritoStock(usuarioId, productoId, cantidad);
 
-            if (validacionCarrito.Carrito == null || !validacionCarrito.Success)
+            if (!validacionCarrito.Success)
             {
                 resultado.Success = validacionCarrito.Success;
                 resultado.Message = validacionCarrito.Message;
@@ -61,7 +61,7 @@ namespace QueseriaSoftware.Services
             if (productoEnCarrito != null)
             {
                 // Actualizar cantidad si ya existe
-                productoEnCarrito.Cantidad += cantidad;
+                productoEnCarrito.Cantidad = cantidad;
             }
             else
             {
@@ -98,8 +98,8 @@ namespace QueseriaSoftware.Services
                 };
 
                 _context.Carritos.Add(carrito);
+                await _context.SaveChangesAsync();
 
-                //No existe nueva linea, agregamos al carrito.
                 var nuevaLinea = new CarritoLinea
                 {
                     CarritoId = carrito.Id,
@@ -109,11 +109,13 @@ namespace QueseriaSoftware.Services
 
                 _context.CarritoLineas.Add(nuevaLinea);
                 await _context.SaveChangesAsync();
+
                 return new Resultado
                 {
                     Success = true,
                     Message = "Producto agregado correctamente"
                 };
+
             }
 
             //Si el carrito existe, se actualiza la linea
@@ -150,6 +152,7 @@ namespace QueseriaSoftware.Services
         {
             int usuarioIdInt = int.Parse(usuarioId);
             var carrito = await _context.Carritos
+                .Include(x => x.Lineas)
                 .FirstOrDefaultAsync(c => c.IdUsuario == usuarioIdInt && c.Activo);
 
             return carrito;
@@ -186,8 +189,13 @@ namespace QueseriaSoftware.Services
 
         public async Task<Dictionary<int, ProductoEnCarritoDto>> ObtenerProductosDelCarrito(int usuarioId)
         {
+            var carrito = await ObtenerCarrito(usuarioId.ToString());
+
+            if (carrito == null)
+                return new Dictionary<int, ProductoEnCarritoDto>();
+
             return await _context.CarritoLineas
-                .Where(cl => cl.Carrito.IdUsuario == usuarioId)
+                .Where(cl => cl.CarritoId == carrito.Id)
                 .Select(cl => new ProductoEnCarritoDto
                 {
                     ProductoId = cl.ProductoId,
