@@ -1,4 +1,5 @@
-﻿using QueseriaSoftware.DTOs.Resultados;
+﻿using Microsoft.AspNetCore.Mvc;
+using QueseriaSoftware.DTOs.Resultados;
 using QueseriaSoftware.DTOs.Resultados.Pedido;
 using QueseriaSoftware.Models;
 using QueseriaSoftware.Models.EstadosPedido;
@@ -14,5 +15,7 @@ namespace QueseriaSoftware.Services
         Task<Pedido?> ObtenerUltimoPedido(string usuarioId);
 
         Task<Resultado> AgregarDireccionAlPedido(string usuarioId, int direccionId);
+
+        void CambiarASiguienteEstado(Pedido pedido);
     }
 }

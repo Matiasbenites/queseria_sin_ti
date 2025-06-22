@@ -34,7 +34,7 @@ namespace QueseriaSoftware.Controllers
 
             if (resultadoCrearPedido.PedidoPendienteDePago)
             {
-                RedirectToAction("ConfirmarPago", "Pago");
+                return RedirectToAction("ConfirmarPago", "Pago");
             }
 
             var viewModel = new SeleccionDireccionViewModel

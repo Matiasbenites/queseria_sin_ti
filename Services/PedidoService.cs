@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
 using QueseriaSoftware.DTOs;
@@ -127,6 +128,9 @@ namespace QueseriaSoftware.Services
 
             pedido.IdDireccion = direccionId;
 
+            CambiarASiguienteEstado(pedido);
+
+
             _context.Pedidos.Update(pedido);
             await _context.SaveChangesAsync();
 
@@ -146,6 +150,15 @@ namespace QueseriaSoftware.Services
                 .FirstOrDefaultAsync();
 
             return ultimoPedido;
+        }
+
+        public void CambiarASiguienteEstado(Pedido pedido)
+        {
+            var estadoActual = pedido.EstadoPedido;
+            var nuevoEstado = estadoActual.SiguienteEstado();
+
+            pedido.EstadoPedido = nuevoEstado; // cambia estado lógico
+            pedido.Estado = nuevoEstado.ObtenerEstado(); // actualiza el campo que persiste en la BD
         }
     }
 }
