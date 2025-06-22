@@ -17,6 +17,7 @@ builder.Services.AddScoped<IProductosService,ProductosService>();
 builder.Services.AddScoped<ISesionService,SesionService>();
 builder.Services.AddScoped<ICarritoService,CarritoService>();
 builder.Services.AddScoped<IPedidoService,PedidoService>();
+builder.Services.AddScoped<IDireccionService,DireccionService>();
 
 builder.Services.AddAuthentication("QueseriaCookiesAuth")
     .AddCookie("QueseriaCookiesAuth", options =>

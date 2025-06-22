@@ -2,6 +2,7 @@
 using QueseriaSoftware.Data;
 using QueseriaSoftware.DTOs.UserLogin;
 using QueseriaSoftware.Models;
+using QueseriaSoftware.ViewModels;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -41,6 +42,36 @@ namespace QueseriaSoftware.Services
         public bool EsAutenticado()
         {
             return _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
+        }
+
+        public async Task<List<DireccionViewModel>> ObtenerDireccionesDelUsuario(string usuarioId)
+        {
+            var idUsuario = int.Parse(usuarioId);
+            var direcciones = await _context.UsuarioDirecciones
+                .Where(ud => ud.IdUsuario == idUsuario && ud.Activo && ud.Direccion != null && ud.Direccion.Activo)
+                .Include(ud => ud.Direccion!)
+                    .ThenInclude(d => d.Localidad!)
+                        .ThenInclude(l => l.Provincia)
+                .Select(ud => ud.Direccion!)
+                .ToListAsync();
+
+            var direccionesDto = direcciones.Select(d => new DireccionViewModel
+            {
+                Id = d.Id,
+                Calle = d.Calle,
+                Numero = d.Numero,
+                TelefonoContacto = d.TelefonoContacto,
+                Localidad = new LocalidadViewModel
+                {
+                    Nombre = d.Localidad!.Nombre,
+                    Provincia = new ProvinciaViewModel
+                    {
+                        Nombre = d.Localidad.Provincia!.Nombre
+                    }
+                }
+            }).ToList();
+
+            return direccionesDto;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace QueseriaSoftware.ViewModels
     {
         public decimal TotalCompra { get; set; }
 
-        public List<DireccionViewModel> Direcciones { get; set; } = new();
+        public List<DireccionViewModel> Direcciones { get; set; } = new List<DireccionViewModel>();
 
         public List<SelectListItem> Localidades { get; set; } = new();
     }

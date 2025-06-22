@@ -3,23 +3,49 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
 using QueseriaSoftware.Models;
+using QueseriaSoftware.Services;
 using QueseriaSoftware.ViewModels;
+using System.Security.Claims;
 
 namespace QueseriaSoftware.Controllers
 {
     public class PedidosController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPedidoService _pedidoService;
 
-        public PedidosController(AppDbContext context)
+        public PedidosController(AppDbContext context, IHttpContextAccessor httpContextAccessor, IPedidoService pedidoService)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            _pedidoService = pedidoService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> CrearPedido()
         {
+            var usuarioId = User.Identity.IsAuthenticated
+            ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+            : HttpContext.Session.Id;
 
-            return View();
+            var resultadoCrearPedido = await _pedidoService.CrearPedido(usuarioId, "Direccion pendiente");
+
+            var viewModel = new SeleccionDireccionViewModel
+            {
+                TotalCompra = resultadoCrearPedido.Total,
+                Direcciones = resultadoCrearPedido.Direcciones,
+                Localidades = await _context.Localidades
+                .Include(l => l.Provincia)
+                .Select(l => new SelectListItem
+                {
+                    Value = l.Id.ToString(),
+                    Text = $"{l.Nombre}, {l.Provincia.Nombre}"
+                })
+                .ToListAsync()
+            };
+
+            return View(viewModel);
         }
 
         // GET: Pedidos ver pedidos

@@ -6,8 +6,6 @@
 }
 
 <div class="container my-5">
-    <h2 class="mb-4">Total de la compra: <strong>$@Model.TotalCompra.ToString("N2")</strong></h2>
-
     <form id="direccionForm" asp-action="GuardarDireccion" asp-controller="Carrito" method="post">
         @if (Model.Direcciones.Any())
         {
@@ -64,11 +62,17 @@
                             }
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-success">Guardar dirección</button>
+                    <div class="d-flex justify-content-end align-items-end mt-3">
+                        <button type="submit" class="btn btn-green">Guardar dirección</button>
+                    </div>
                 </div>
             </div>
         }
     </form>
+    <h2 class="mb-4 mt-4">Total de la compra: <strong>$@Model.TotalCompra.ToString("N2")</strong></h2>
+    <div class="col-6 d-flex justify-content-start align-items-center mt-4">
+        <a asp-controller="Carrito" asp-action="ObtenerCarritoUsuario" class="btn-green" style="width: 200px;">Volver al carrito</a>
+    </div>
 </div>
 
 @section Scripts {

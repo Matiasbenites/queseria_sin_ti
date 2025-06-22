@@ -192,7 +192,8 @@ namespace QueseriaSoftware.Services
                 {
                     ProductoId = cl.ProductoId,
                     Cantidad = cl.Cantidad,
-                    CarritoLineaId = cl.Id
+                    CarritoLineaId = cl.Id,
+                    PrecioUnitario = cl.Producto != null ? cl.Producto.Precio : 0
                 })
                 .ToDictionaryAsync(cl => cl.ProductoId);
         }

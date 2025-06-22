@@ -1,0 +1,11 @@
+﻿using QueseriaSoftware.ViewModels;
+
+namespace QueseriaSoftware.DTOs.Resultados.Pedido
+{
+    public class ResultadoCrearPedido
+    {
+        public decimal Total { get; set; }
+
+        public List<DireccionViewModel>? Direcciones { get; set; }
+    }
+}
