@@ -60,7 +60,7 @@
             <div class="col-6">
                 <a asp-controller="Productos" asp-action="Catalogo" class="btn-green" style="width: 200px;">Volver al catálogo</a>
             </div>
-            @if (!String.IsNullOrEmpty(Model.estadoUltimoPedido) && Model.estadoUltimoPedido.Equals("nuevo"))
+            @if (!String.IsNullOrEmpty(Model.estadoUltimoPedido) && Model.estadoUltimoPedido.Equals("Nuevo"))
             {
                 <div class="col-6 d-flex justify-content-end align-items-end">
                     <a asp-controller="Pago" asp-action="ConfirmarPedido" class="btn-green" style="width: 200px;">Ir a pagar</a>
