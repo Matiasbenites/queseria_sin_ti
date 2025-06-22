@@ -19,7 +19,6 @@ namespace QueseriaSoftware.Data
         public DbSet<Pais> Paises { get; set; }
         public DbSet<Provincia> Provincias { get; set; }
         public DbSet<Localidad> Localidades { get; set; }
-        public DbSet<UsuarioDireccion> UsuarioDirecciones { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

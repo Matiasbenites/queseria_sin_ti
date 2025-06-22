@@ -50,12 +50,11 @@ namespace QueseriaSoftware.Services
         public async Task<List<DireccionViewModel>> ObtenerDireccionesDelUsuario(string usuarioId)
         {
             var idUsuario = int.Parse(usuarioId);
-            var direcciones = await _context.UsuarioDirecciones
-                .Where(ud => ud.IdUsuario == idUsuario && ud.Activo && ud.Direccion != null && ud.Direccion.Activo)
-                .Include(ud => ud.Direccion!)
-                    .ThenInclude(d => d.Localidad!)
-                        .ThenInclude(l => l.Provincia)
-                .Select(ud => ud.Direccion!)
+            var direcciones = await _context.Direcciones
+                .Where(ud => ud.IdUsuario == idUsuario && ud.Activo && ud != null && ud.Activo)
+                .Include(ud => ud.Localidad!)
+                .ThenInclude(d => d.Provincia!)
+                .Select(ud => ud!)
                 .ToListAsync();
 
             var direccionesDto = direcciones.Select(d => new DireccionViewModel
@@ -77,51 +76,9 @@ namespace QueseriaSoftware.Services
             return direccionesDto;
         }
 
-        public async Task<ResultadoAgregarDireccionAUsuario> AgregarDireccionUsuario(
-            string usuarioId, string calle, int? numero, string telefonoContacto, int? idLocalidad)
+        public async Task<ResultadoAgregarDireccionAUsuario> AgregarDireccionUsuario(string usuarioId, string calle, int? numero, string telefonoContacto, int? idLocalidad)
         {
             var resultado = new ResultadoAgregarDireccionAUsuario();
-
-            var resultadoCreacion = await _direccionService.CrearDireccion(calle, numero, telefonoContacto, idLocalidad);
-            if (!resultadoCreacion.Success || resultadoCreacion.DireccionId == null)
-            {
-                resultado.Success = false;
-                resultado.Message = "Error al crear dirección: " + resultadoCreacion.Message;
-                return resultado;
-            }
-
-            var resultadoAsociacion = await AsociarDireccionUsuario(usuarioId, resultadoCreacion.DireccionId.Value);
-            if (!resultadoAsociacion.Success)
-            {
-                resultado.Success = false;
-                resultado.Message = "Error al asociar dirección al usuario: " + resultadoAsociacion.Message;
-                return resultado;
-            }
-
-            // Cargar datos en el resultado final
-            resultado.Success = true;
-            resultado.Message = "Dirección agregada y asociada exitosamente.";
-            resultado.Calle = resultadoCreacion.Calle;
-            resultado.Numero = resultadoCreacion.Numero;
-            resultado.TelefonoContacto = resultadoCreacion.TelefonoContacto;
-            resultado.IdLocalidad = resultadoCreacion.IdLocalidad;
-
-            resultado.Direccion = new DireccionViewModel
-            {
-                Id = resultadoCreacion.DireccionId.Value,
-                Calle = resultadoCreacion.Calle,
-                Numero = resultadoCreacion.Numero ?? 0,
-                TelefonoContacto = resultadoCreacion.TelefonoContacto,
-                Localidad = new LocalidadViewModel { Nombre = resultadoCreacion.NombreLocalidad, Provincia = new ProvinciaViewModel { Nombre = resultadoCreacion.NombreProvincia } },
-            };
-
-            return resultado;
-        }
-
-
-        public async Task<Resultado> AsociarDireccionUsuario(string usuarioId, int? direccionId)
-        {
-            var resultado = new Resultado();
 
             if (!int.TryParse(usuarioId, out int idUsuario))
             {
@@ -130,30 +87,27 @@ namespace QueseriaSoftware.Services
                 return resultado;
             }
 
-            var existeRelacion = await _context.UsuarioDirecciones
-                .AnyAsync(ud => ud.IdUsuario == idUsuario && ud.IdDireccion == direccionId);
+            var resultadoCreacion = await _direccionService.CrearDireccion(idUsuario, calle, numero, telefonoContacto, idLocalidad);
 
-            if (existeRelacion)
+            if (!resultadoCreacion.Success || resultadoCreacion.DireccionId == null)
             {
                 resultado.Success = false;
-                resultado.Message = "La dirección ya está asociada al usuario.";
+                resultado.Message = "Error al crear dirección: " + resultadoCreacion.Message;
                 return resultado;
             }
-
-            var relacion = new UsuarioDireccion
+            resultado.Success = resultadoCreacion.Success;
+            resultado.Direccion = new DireccionViewModel
             {
-                IdUsuario = idUsuario,
-                IdDireccion = direccionId.Value,
-                Activo = true
+                Id = resultadoCreacion.DireccionId.Value,
+                Calle = resultadoCreacion.Calle,
+                Numero = resultadoCreacion.Numero ?? 0,
+                TelefonoContacto = resultadoCreacion.TelefonoContacto,
+                Localidad = new LocalidadViewModel { Nombre = resultadoCreacion.NombreLocalidad, Provincia = new ProvinciaViewModel { Nombre = resultadoCreacion.NombreProvincia} }
             };
 
-            _context.UsuarioDirecciones.Add(relacion);
-            await _context.SaveChangesAsync();
-
-            resultado.Success = true;
-            resultado.Message = "Dirección asociada correctamente al usuario.";
             return resultado;
         }
+
 
     }
 }

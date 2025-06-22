@@ -21,5 +21,11 @@ namespace QueseriaSoftware.Models
 
         [ForeignKey("IdLocalidad")]
         public Localidad? Localidad { get; set; }
+
+        [Required]
+        public int IdUsuario { get; set; }
+
+        [ForeignKey(nameof(IdUsuario))]
+        public Usuario? Usuario { get; set; }
     }
 }

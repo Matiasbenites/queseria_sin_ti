@@ -14,11 +14,10 @@ namespace QueseriaSoftware.Services
             _context = context;
         }
 
-        public async Task<ResultadoCrearDireccion> CrearDireccion(string calle, int? numero, string telefonoContacto, int? idLocalidad)
+        public async Task<ResultadoCrearDireccion> CrearDireccion(int idUsuario, string calle, int? numero, string telefonoContacto, int? idLocalidad)
         {
             var resultado = new ResultadoCrearDireccion();
 
-            // Validaciones básicas
             if (string.IsNullOrWhiteSpace(calle))
             {
                 resultado.Success = false;
@@ -46,7 +45,8 @@ namespace QueseriaSoftware.Services
                 Numero = numero ?? 0,
                 TelefonoContacto = telefonoContacto,
                 IdLocalidad = idLocalidad.Value,
-                Activo = true
+                Activo = true,
+                IdUsuario = idUsuario
             };
 
             _context.Direcciones.Add(direccion);
@@ -58,15 +58,18 @@ namespace QueseriaSoftware.Services
 
             resultado.Success = true;
             resultado.Message = "Dirección creada con éxito.";
+            resultado.DireccionId = direccion.Id;
             resultado.Calle = direccion.Calle;
             resultado.Numero = direccion.Numero;
             resultado.TelefonoContacto = direccion.TelefonoContacto;
-            resultado.IdLocalidad = localidad.Id;
+            resultado.IdLocalidad = direccion.IdLocalidad;
             resultado.DireccionId = direccion.Id;
             resultado.NombreLocalidad = localidad.Nombre;
             resultado.NombreProvincia = localidad.Provincia.Nombre;
 
+
             return resultado;
         }
+
     }
 }
