@@ -128,8 +128,11 @@ namespace QueseriaSoftware.Services
 
             pedido.IdDireccion = direccionId;
 
-            CambiarASiguienteEstado(pedido);
+            if (!pedido.Estado.Equals("Nuevo"))
+            {
+                CambiarASiguienteEstado(pedido);
 
+            }
 
             _context.Pedidos.Update(pedido);
             await _context.SaveChangesAsync();
