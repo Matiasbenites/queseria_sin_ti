@@ -17,5 +17,8 @@ namespace QueseriaSoftware.Services
         Task<Resultado> AgregarDireccionAlPedido(string usuarioId, int direccionId);
 
         void CambiarASiguienteEstado(Pedido pedido);
+
+        Task<decimal> CalcularTotalPedido(string usuarioId);
+
     }
 }

@@ -1,1 +1,62 @@
-﻿<h1>Hello World!</h1>
+﻿@model QueseriaSoftware.ViewModels.ConfirmarPedidoViewModel
+@{
+    ViewData["Title"] = "Confirmar Pago";
+}
+
+<div class="container my-5">
+    <h2 class="mb-4">Seleccioná un medio de pago</h2>
+
+    <form id="formFinalizarPedido" method="post" asp-action="ProcesarPago" asp-controller="Pago">
+        <div class="row g-4">
+            @foreach (var pago in Model.Pagos)
+            {
+                <div class="col-md-4">
+                    <div class="card shadow-sm pago-card h-100">
+                        <div class="card-body text-center">
+                            <input type="radio" name="medioPagoId" class="form-check-input me-2"
+                                   id="pago_@pago.Id" value="@pago.Id" />
+                            <label class="form-check-label fs-5" for="pago_@pago.Id">@pago.Nombre</label>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="mt-5">
+            <h4>Total a pagar: <strong>$@Model.Total.ToString("N2")</strong></h4>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-success btn-lg" disabled id="btnFinalizar">Finalizar pedido</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Habilita el botón al seleccionar medio de pago
+            $('input[name="medioPagoId"]').on('change', function () {
+                $('#btnFinalizar').prop('disabled', false);
+            });
+        });
+    </script>
+}
+
+<style>
+    .pago-card {
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        border: 2px solid transparent;
+    }
+
+        .pago-card:hover {
+            transform: scale(1.03);
+            border-color: #198754;
+        }
+
+    .form-check-input:checked + .form-check-label {
+        font-weight: bold;
+        color: #198754;
+    }
+</style>

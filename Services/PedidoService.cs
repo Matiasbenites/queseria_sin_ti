@@ -160,5 +160,11 @@ namespace QueseriaSoftware.Services
             pedido.EstadoPedido = nuevoEstado; // cambia estado lógico
             pedido.Estado = nuevoEstado.ObtenerEstado(); // actualiza el campo que persiste en la BD
         }
+
+        public async Task<decimal> CalcularTotalPedido(string usuarioId)
+        {
+            var productosEnCarrito = await _carritoService.ObtenerProductosDelCarrito(int.Parse(usuarioId));
+            return CalcularTotal(productosEnCarrito);
+        }
     }
 }
