@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QueseriaSoftware.Data;
 
@@ -11,9 +12,11 @@ using QueseriaSoftware.Data;
 namespace QueseriaSoftware.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250621235632_CrearTablaUsuarioDireccion")]
+    partial class CrearTablaUsuarioDireccion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,24 +171,6 @@ namespace QueseriaSoftware.Migrations
                     b.HasIndex("IdProvincia");
 
                     b.ToTable("Localidades");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Activo = true,
-                            CodigoPostal = "3400",
-                            IdProvincia = 1,
-                            Nombre = "Corrientes Capital"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Activo = true,
-                            CodigoPostal = "3500",
-                            IdProvincia = 2,
-                            Nombre = "Resistencia"
-                        });
                 });
 
             modelBuilder.Entity("QueseriaSoftware.Models.Marca", b =>
@@ -258,14 +243,6 @@ namespace QueseriaSoftware.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Paises");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Activo = true,
-                            Nombre = "Argentina"
-                        });
                 });
 
             modelBuilder.Entity("QueseriaSoftware.Models.Pedido", b =>
@@ -450,22 +427,6 @@ namespace QueseriaSoftware.Migrations
                     b.HasIndex("IdPais");
 
                     b.ToTable("Provincias");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Activo = true,
-                            IdPais = 1,
-                            Nombre = "Corrientes"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Activo = true,
-                            IdPais = 1,
-                            Nombre = "Chaco"
-                        });
                 });
 
             modelBuilder.Entity("QueseriaSoftware.Models.Rol", b =>

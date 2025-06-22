@@ -14,6 +14,13 @@ namespace QueseriaSoftware.Data
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Carrito> Carritos { get; set; }
         public DbSet<CarritoLinea> CarritoLineas { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Direccion> Direcciones { get; set; }
+        public DbSet<Pais> Paises { get; set; }
+        public DbSet<Provincia> Provincias { get; set; }
+        public DbSet<Localidad> Localidades { get; set; }
+        public DbSet<UsuarioDireccion> UsuarioDirecciones { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

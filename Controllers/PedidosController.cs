@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
 using QueseriaSoftware.Models;
+using QueseriaSoftware.ViewModels;
 
 namespace QueseriaSoftware.Controllers
 {
@@ -17,7 +18,8 @@ namespace QueseriaSoftware.Controllers
 
         public async Task<IActionResult> CrearPedido()
         {
-            throw new NotImplementedException();
+
+            return View();
         }
 
         // GET: Pedidos ver pedidos

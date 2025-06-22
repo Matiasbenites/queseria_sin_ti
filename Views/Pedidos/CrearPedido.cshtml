@@ -1,0 +1,83 @@
+﻿@model QueseriaSoftware.ViewModels.SeleccionDireccionViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Seleccionar Dirección de Envío";
+}
+
+<div class="container my-5">
+    <h2 class="mb-4">Total de la compra: <strong>$@Model.TotalCompra.ToString("N2")</strong></h2>
+
+    <form id="direccionForm" asp-action="GuardarDireccion" asp-controller="Carrito" method="post">
+        @if (Model.Direcciones.Any())
+        {
+            <h4>Seleccioná una dirección de envío:</h4>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                @foreach (var direccion in Model.Direcciones)
+                {
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <input class="form-check-input direccion-radio" type="radio"
+                                       name="DireccionSeleccionada" value="@direccion.Id"
+                                       id="dir_@direccion.Id" />
+                                <label class="form-check-label" for="dir_@direccion.Id">
+                                    <strong>@direccion.Calle @direccion.Numero</strong><br />
+                                    Tel: @direccion.TelefonoContacto<br />
+                                    @direccion.Localidad.Nombre, @direccion.Localidad.Provincia.Nombre, Argentina
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" id="btnIrAPagar" class="btn btn-primary" disabled>Ir a pagar</button>
+            </div>
+        }
+        else
+        {
+            <h4>No tenés direcciones guardadas. Agregá una nueva:</h4>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="Calle" class="form-label">Calle</label>
+                        <input type="text" class="form-control" name="Calle" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Numero" class="form-label">Número</label>
+                        <input type="number" class="form-control" name="Numero" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="TelefonoContacto" class="form-label">Teléfono de contacto</label>
+                        <input type="text" class="form-control" name="TelefonoContacto" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="IdLocalidad" class="form-label">Localidad</label>
+                        <select class="form-select" name="IdLocalidad" required>
+                            <option value="">Seleccione una localidad...</option>
+                            @foreach (var loc in Model.Localidades)
+                            {
+                                <option value="@loc.Value">@loc.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Guardar dirección</button>
+                </div>
+            </div>
+        }
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Habilita el botón cuando se selecciona una dirección
+            $('.direccion-radio').on('change', function () {
+                $('#btnIrAPagar').prop('disabled', false);
+            });
+        });
+    </script>
+}
