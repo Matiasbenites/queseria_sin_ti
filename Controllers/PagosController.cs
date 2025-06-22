@@ -42,10 +42,15 @@ namespace QueseriaSoftware.Controllers
                 ? User.FindFirst(ClaimTypes.NameIdentifier).Value
                 : HttpContext.Session.Id;
 
-            var resultadoPago = _pagoService.ProcesarPago(medioPagoId, usuarioId);
+            var resultadoPago = await _pagoService.ProcesarPago(medioPagoId, usuarioId);
 
-            return View();
+            return Json(new
+            {
+                success = resultadoPago.Success,
+                message = resultadoPago.Message
+            });
         }
+
 
     }
 }

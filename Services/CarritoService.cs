@@ -226,6 +226,29 @@ namespace QueseriaSoftware.Services
 
             return viewModel;
         }
+
+        public async Task<Resultado> Eliminar(string usuarioId)
+        {
+            var resultado = new Resultado();
+
+            var carritoActualUsuario = await ObtenerCarrito(usuarioId);
+
+            if (carritoActualUsuario == null)
+            {
+                resultado.Success = false;
+                resultado.Message = "No se encontró un carrito activo para el usuario.";
+                return resultado;
+            }
+
+            carritoActualUsuario.Activo = false;
+            _context.Carritos.Update(carritoActualUsuario);
+            await _context.SaveChangesAsync();
+
+            resultado.Success = true;
+            resultado.Message = "Carrito eliminado correctamente.";
+            return resultado;
+        }
+
     }
 
 }

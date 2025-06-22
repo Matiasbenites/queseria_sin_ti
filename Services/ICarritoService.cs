@@ -24,5 +24,7 @@ namespace QueseriaSoftware.Services
         Task<CarritoLinea> ObtenerLineaCarrito(int lineaId);
 
         Task<Dictionary<int, ProductoEnCarritoDto>> ObtenerProductosDelCarrito(int usuarioId);
+
+        Task<Resultado> Eliminar(string usuarioId);
     }
 }

@@ -35,13 +35,70 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            const $btnFinalizar = $('#btnFinalizar');
+
             // Habilita el botón al seleccionar medio de pago
             $('input[name="medioPagoId"]').on('change', function () {
-                $('#btnFinalizar').prop('disabled', false);
+                $btnFinalizar.prop('disabled', false).text('Finalizar pedido');
+            });
+
+            $('#formFinalizarPedido').on('submit', function (e) {
+                e.preventDefault(); // Previene envío normal
+
+                $btnFinalizar.prop('disabled', true).text('Procesando...');
+
+                const medioPagoId = $('input[name="medioPagoId"]:checked').val();
+
+                if (!medioPagoId) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Aviso',
+                        text: 'Debe seleccionar un medio de pago.'
+                    });
+                    $btnFinalizar.prop('disabled', false).text('Finalizar pedido');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("ProcesarPago", "Pagos")',
+                    type: 'POST',
+                    data: { medioPagoId },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Pago confirmado!',
+                                text: response.message,
+                                confirmButtonText: 'Aceptar'
+                            }).then(() => {
+                                window.location.href = '@Url.Action("Index", "Pedidos")';
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message
+                            }).then(() => {
+                                // Restaurar botón después del error
+                                $btnFinalizar.prop('disabled', false).text('Finalizar pedido');
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un problema al procesar el pago.'
+                        }).then(() => {
+                            $btnFinalizar.prop('disabled', false).text('Finalizar pedido');
+                        });
+                    }
+                });
             });
         });
     </script>
 }
+
 
 <style>
     .pago-card {

@@ -2,6 +2,7 @@
 using QueseriaSoftware.Data;
 using QueseriaSoftware.DTOs.Resultados;
 using QueseriaSoftware.DTOs.Resultados.Pagos;
+using QueseriaSoftware.Models;
 using QueseriaSoftware.Models.EstadosPedido;
 using QueseriaSoftware.ViewModels;
 
@@ -11,14 +12,16 @@ namespace QueseriaSoftware.Services
     {
         private readonly IPedidoService _pedidoService;
         private readonly IProductosService _productosService;
+        private readonly ICarritoService _carritoService;
         private readonly AppDbContext _context;
 
 
-        public PagoService(IPedidoService pedidoService, AppDbContext context, IProductosService productosService)
+        public PagoService(IPedidoService pedidoService, AppDbContext context, IProductosService productosService, ICarritoService carritoService)
         {
             _pedidoService = pedidoService;
             _context = context;
             _productosService = productosService;
+            _carritoService = carritoService;
         }
 
         public async Task<ResultadoDatosDePago> ObtenerDatosDePago(string usuarioId)
@@ -55,31 +58,62 @@ namespace QueseriaSoftware.Services
         {
             var resultado = new ResultadoConfirmarPedido();
 
-            var validacion = await ValidarDatosPago(medioPagoId, usuarioId);
-            if (!validacion.Success)
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
             {
-                resultado.Success = false;
-                resultado.Message = validacion.Message;
+                var validacion = await ValidarDatosPago(medioPagoId, usuarioId);
+                if (!validacion.Success)
+                {
+                    resultado.Success = false;
+                    resultado.Message = validacion.Message;
+                    return resultado;
+                }
+
+                var ultimoPedido = await _pedidoService.ObtenerUltimoPedido(usuarioId);
+                var productosUltimoPedido = ultimoPedido.PedidoDetalles;
+
+                var resultadoStock = await _productosService.DescontarStock(productosUltimoPedido);
+                if (!resultadoStock.Success)
+                {
+                    resultado.Success = false;
+                    resultado.Message = resultadoStock.Message;
+                    return resultado;
+                }
+
+                var resultadoEliminarCarrito = await _carritoService.Eliminar(usuarioId);
+                if (!resultadoEliminarCarrito.Success)
+                {
+                    resultado.Success = false;
+                    resultado.Message = resultadoEliminarCarrito.Message;
+                    return resultado;
+                }
+
+                ultimoPedido.IdPago = medioPagoId;
+                _pedidoService.CambiarASiguienteEstado(ultimoPedido);
+                _context.Pedidos.Update(ultimoPedido);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                resultado.Success = true;
+                resultado.Message = "Pago exitoso, su envío está en preparación";
                 return resultado;
             }
-
-            var ultimoPedido = await _pedidoService.ObtenerUltimoPedido(usuarioId);
-            var productosUltimoPedido = ultimoPedido.PedidoDetalles;
-
-            var resultadoStock = await _productosService.DescontarStock(productosUltimoPedido);
-            if (!resultadoStock.Success)
+            catch (Exception ex)
             {
+                await transaction.RollbackAsync();
+
                 resultado.Success = false;
-                resultado.Message = resultadoStock.Message;
+                resultado.Message = "Ocurrió un error al procesar el pago. Intente nuevamente.";
+
+                // Opcional: log del error
+                // _logger.LogError(ex, "Error en ProcesarPago para usuario {usuarioId}", usuarioId);
+
                 return resultado;
             }
-
-
-
-            resultado.Success = true;
-            resultado.Message = "Pedido confirmado correctamente.";
-            return resultado;
         }
+
 
 
         private async Task<Resultado> ValidarDatosPago(int medioPagoId, string usuarioId)
@@ -87,7 +121,7 @@ namespace QueseriaSoftware.Services
             var resultado = new Resultado();
 
             // Validar usuario
-            var usuario = await _context.Usuarios.FindAsync(usuarioId);
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == int.Parse(usuarioId));
             if (usuario == null)
             {
                 resultado.Success = false;
