@@ -108,6 +108,20 @@ namespace QueseriaSoftware.Services
             return resultado;
         }
 
+        public async Task<Resultado> ValidarDireccion(string usuarioId, int direccionId)
+        {
+            var direccion = await _context.Direcciones
+                .FirstOrDefaultAsync(x => x.Id == direccionId &&
+                                          x.Activo &&
+                                          x.IdUsuario == int.Parse(usuarioId));
+
+            if (direccion != null)
+            {
+                return new Resultado { Success = true };
+            }
+
+            return new Resultado { Success = false, Message = "Dirección no válida" };
+        }
 
     }
 }

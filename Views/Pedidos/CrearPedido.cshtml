@@ -82,12 +82,11 @@
                 $('#btnIrAPagar').prop('disabled', false);
 
                 const direccionId = $(this).val();
-                const usuarioId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
 
                 $.ajax({
                     type: 'POST',
                     url: '/Pedidos/AgregarDireccionAlPedido',
-                    data: { usuarioId, direccionId },
+                    data: { direccionId },
                     success: function (response) {
                        
                     },
@@ -156,9 +155,8 @@
                             $('#btnIrAPagar').prop('disabled', false);
 
                             const direccionId = $(this).val();
-                            const usuarioId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
 
-                            $.post('/Pedidos/AgregarDireccionAlPedido', { usuarioId, direccionId });
+                            $.post('/Pedidos/AgregarDireccionAlPedido', { direccionId });
                         });
 
                         // Limpiar form

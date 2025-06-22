@@ -55,12 +55,16 @@ namespace QueseriaSoftware.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AgregarDireccionAlPedido(string usuarioId, int direccionId)
+        public async Task<IActionResult> AgregarDireccionAlPedido(int direccionId)
         {
-            //var resultado = await _pedidoService.AsociarDireccionPedido(usuarioId, direccionId);
+            var usuarioId = User.Identity.IsAuthenticated
+                ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+                : HttpContext.Session.Id;
 
-            //if (!resultado.Success)
-            //    return BadRequest(new { success = false, message = "No se pudo asociar la dirección al pedido." });
+            var resultado = await _pedidoService.AgregarDireccionAlPedido(usuarioId, direccionId);
+
+            if (!resultado.Success)
+                return BadRequest(new { success = false, message = "No se pudo asociar la dirección al pedido." });
 
             return Ok(new { success = true, message = "Dirección asociada correctamente." });
         }

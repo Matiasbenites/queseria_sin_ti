@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
 using QueseriaSoftware.DTOs;
+using QueseriaSoftware.DTOs.Resultados;
 using QueseriaSoftware.DTOs.Resultados.Pedido;
 using QueseriaSoftware.Models;
 
@@ -98,6 +99,53 @@ namespace QueseriaSoftware.Services
                 return(string.Empty);
             }
             return ultimoPedido.EstadoPedido.ObtenerEstado();
+        }
+
+        public async Task<Resultado> AgregarDireccionAlPedido(string usuarioId, int direccionId)
+        {
+            var resultadoValidarDireccion = await _usuariosService.ValidarDireccion(usuarioId, direccionId);
+
+            if (!resultadoValidarDireccion.Success)
+            {
+                return new Resultado
+                {
+                    Success = false,
+                    Message = "La dirección no es válida para este usuario."
+                };
+            }
+
+            var pedido = await ObtenerUltimoPedido(usuarioId);
+
+            if (pedido == null)
+            {
+                return new Resultado
+                {
+                    Success = false,
+                    Message = "No se encontró un pedido activo para el usuario."
+                };
+            }
+
+            pedido.IdDireccion = direccionId;
+
+            _context.Pedidos.Update(pedido);
+            await _context.SaveChangesAsync();
+
+            return new Resultado
+            {
+                Success = true,
+                Message = "Dirección asociada correctamente al pedido."
+            };
+        }
+
+
+        public async Task<Pedido?> ObtenerUltimoPedido(string usuarioId)
+        {
+            var ultimoPedido = await _context.Pedidos
+                .Where(x => x.IdUsuario == int.Parse(usuarioId))
+                .OrderByDescending(x => x.Id)
+                .FirstOrDefaultAsync();
+
+            return ultimoPedido;
         }
     }
 }
