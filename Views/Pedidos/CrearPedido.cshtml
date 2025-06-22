@@ -6,7 +6,7 @@
 }
 
 <div class="container my-5">
-    <form id="direccionForm" asp-action="GuardarDireccion" asp-controller="Carrito" method="post">
+    <form id="direccionForm" asp-action="CrearDireccion" asp-controller="Usuario" method="post">
         @if (Model.Direcciones.Any())
         {
             <h4>Seleccioná una dirección de envío:</h4>
@@ -78,10 +78,84 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Habilita el botón cuando se selecciona una dirección
+            // ✅ Habilita botón al seleccionar radio
             $('.direccion-radio').on('change', function () {
                 $('#btnIrAPagar').prop('disabled', false);
+
+                const direccionId = $(this).val();
+                const usuarioId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Pedido/AgregarDireccionAlPedido',
+                    data: { usuarioId, direccionId },
+                    success: function (response) {
+                        alert(response.message);
+                    },
+                    error: function () {
+                        alert('No se pudo asociar la dirección al pedido.');
+                    }
+                });
+            });
+
+            // ✅ Envío de nueva dirección por AJAX
+            $('#direccionForm').on('submit', function (e) {
+                if ($('.direccion-radio').length > 0) return; // deja pasar submit normal si hay radios
+                e.preventDefault();
+
+                const datos = {
+                    calle: $('input[name="Calle"]').val(),
+                    numero: parseInt($('input[name="Numero"]').val()) || 0,
+                    telefonoContacto: $('input[name="TelefonoContacto"]').val(),
+                    idLocalidad: parseInt($('select[name="IdLocalidad"]').val())
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Usuario/AgregarDireccionAUsuario',
+                    data: JSON.stringify(datos),
+                    contentType: 'application/json',
+                    success: function (resp) {
+                        $('#direccionForm').before(`<div class="alert alert-success">${resp.message}</div>`);
+
+                        // Agregar card nueva
+                        const card = `
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <input class="form-check-input direccion-radio" type="radio"
+                                           name="DireccionSeleccionada" value="${resp.direccion.id}"
+                                           id="dir_${resp.direccion.id}" />
+                                    <label class="form-check-label" for="dir_${resp.direccion.id}">
+                                        <strong>${resp.direccion.calle} ${resp.direccion.numero}</strong><br />
+                                        Tel: ${resp.direccion.telefono}<br />
+                                        ${resp.direccion.localidad}, ${resp.direccion.provincia}, Argentina
+                                    </label>
+                                </div>
+                            </div>
+                        </div>`;
+
+                        $('.row.row-cols-1').append(card);
+
+                        // Rebind al nuevo radio
+                        $('.direccion-radio').off('change').on('change', function () {
+                            $('#btnIrAPagar').prop('disabled', false);
+
+                            const direccionId = $(this).val();
+                            const usuarioId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
+
+                            $.post('/Pedido/AgregarDireccionAlPedido', { usuarioId, direccionId });
+                        });
+
+                        // Limpiar form
+                        $('#direccionForm')[0].reset();
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseJSON?.message ?? 'Error al guardar dirección');
+                    }
+                });
             });
         });
     </script>
+
 }

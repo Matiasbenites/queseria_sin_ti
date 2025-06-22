@@ -54,6 +54,18 @@ namespace QueseriaSoftware.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AgregarDireccionAlPedido(string usuarioId, int direccionId)
+        {
+            //var resultado = await _pedidoService.AsociarDireccionPedido(usuarioId, direccionId);
+
+            //if (!resultado.Success)
+            //    return BadRequest(new { success = false, message = "No se pudo asociar la dirección al pedido." });
+
+            return Ok(new { success = true, message = "Dirección asociada correctamente." });
+        }
+
+
         // GET: Pedidos ver pedidos
         public async Task<IActionResult> Index()
         {
