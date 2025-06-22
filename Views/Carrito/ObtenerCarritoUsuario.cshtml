@@ -63,7 +63,7 @@
             @if (!String.IsNullOrEmpty(Model.estadoUltimoPedido) && Model.estadoUltimoPedido.Equals("Nuevo"))
             {
                 <div class="col-6 d-flex justify-content-end align-items-end">
-                    <a asp-controller="Pago" asp-action="ConfirmarPedido" class="btn-green" style="width: 200px;">Ir a pagar</a>
+                    <a asp-controller="Pagos" asp-action="ObtenerDatosDePago" class="btn-green" style="width: 200px;">Ir a pagar</a>
                 </div>
             }else
             {
