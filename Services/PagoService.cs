@@ -33,6 +33,7 @@ namespace QueseriaSoftware.Services
             {
                 resultado.Success = false;
                 resultado.Message = "Aun no hiciste un pedido";
+                return resultado;
             }
 
             resultado.ConfirmarPedidoViewModel.Total = await _pedidoService.CalcularTotalPedido(usuarioId); ;

@@ -3,36 +3,46 @@
     ViewData["Title"] = "Confirmar Pago";
 }
 
-<div class="container my-5">
-    <h2 class="mb-4">Seleccioná un medio de pago</h2>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+        <div class="mt-3">
+            <a href="/Productos/Catalogo/" class="btn btn-green">Volver al catálogo</a>
+        </div>
+    </div>
+}else
+{
+    <div class="container my-5">
+        <h2 class="mb-4">Seleccioná un medio de pago</h2>
 
-    <form id="formFinalizarPedido" method="post" asp-action="ProcesarPago" asp-controller="Pagos">
-        <div class="row g-4">
-            @foreach (var pago in Model.Pagos)
-            {
-                <div class="col-md-4">
-                    <div class="card shadow-sm pago-card h-100">
-                        <div class="card-body text-center">
-                            <input type="radio" name="medioPagoId" class="form-check-input me-2"
-                                   id="pago_@pago.Id" value="@pago.Id" />
-                            <label class="form-check-label fs-5" for="pago_@pago.Id">@pago.Nombre</label>
+        <form id="formFinalizarPedido" method="post" asp-action="ProcesarPago" asp-controller="Pagos">
+            <div class="row g-4">
+                @foreach (var pago in Model.Pagos)
+                {
+                    <div class="col-md-4">
+                        <div class="card shadow-sm pago-card h-100">
+                            <div class="card-body text-center">
+                                <input type="radio" name="medioPagoId" class="form-check-input me-2"
+                                       id="pago_@pago.Id" value="@pago.Id" />
+                                <label class="form-check-label fs-5" for="pago_@pago.Id">@pago.Nombre</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
 
-        <div class="mt-5">
-            <h4>Total a pagar: <strong>$@Model.Total.ToString("N2")</strong></h4>
-        </div>
+            <div class="mt-5">
+                <h4>Total a pagar: <strong>$@Model.Total.ToString("N2")</strong></h4>
+            </div>
 
-        <div class="mt-4 d-flex justify-content-end">
-            <button type="submit" class="btn btn-success btn-lg" disabled id="btnFinalizar">Finalizar pedido</button>
-        </div>
-    </form>
-</div>
+            <div class="mt-4 d-flex justify-content-end">
+                <button type="submit" class="btn btn-success btn-lg" disabled id="btnFinalizar">Finalizar pedido</button>
+            </div>
+        </form>
+    </div>
 
-@section Scripts {
+    @section Scripts {
     <script>
         $(document).ready(function () {
             const $btnFinalizar = $('#btnFinalizar');
@@ -100,20 +110,21 @@
 }
 
 
-<style>
-    .pago-card {
-        cursor: pointer;
-        transition: transform 0.2s ease-in-out;
-        border: 2px solid transparent;
-    }
-
-        .pago-card:hover {
-            transform: scale(1.03);
-            border-color: #198754;
+    <style>
+        .pago-card {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            border: 2px solid transparent;
         }
 
-    .form-check-input:checked + .form-check-label {
-        font-weight: bold;
-        color: #198754;
-    }
-</style>
+            .pago-card:hover {
+                transform: scale(1.03);
+                border-color: #198754;
+            }
+
+        .form-check-input:checked + .form-check-label {
+            font-weight: bold;
+            color: #198754;
+        }
+    </style>
+}

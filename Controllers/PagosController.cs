@@ -26,10 +26,11 @@ namespace QueseriaSoftware.Controllers
 
             var resultadoDatosDePago = await _pagoService.ObtenerDatosDePago(usuarioId);
 
-            if (resultadoDatosDePago == null || !resultadoDatosDePago.Success || resultadoDatosDePago.ConfirmarPedidoViewModel == null)
+            if (!resultadoDatosDePago.Success || resultadoDatosDePago.ConfirmarPedidoViewModel == null)
             {
-                TempData["Error"] = "No se pudieron obtener los datos de pago.";
-                return RedirectToAction("CrearPedido", "Pedido");
+                ViewBag.Error = resultadoDatosDePago.Message ?? "No se pudieron obtener los datos de pago.";
+
+                return View("ObtenerDatosDePago", null);
             }
 
             return View(resultadoDatosDePago.ConfirmarPedidoViewModel);
