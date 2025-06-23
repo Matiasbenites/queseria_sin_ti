@@ -1,0 +1,31 @@
+﻿@model IEnumerable<QueseriaSoftware.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Mis Pedidos";
+}
+
+<h1>Mis Pedidos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>@item.Total.ToString("C")</td>
+                <td>@item.Estado</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
