@@ -12,10 +12,5 @@ namespace QueseriaSoftware.Services
         Task<List<DireccionViewModel>> ObtenerDireccionesDelUsuario(string usuarioId);
 
         Task<Resultado> ValidarDireccion(string usuarioId, int direccionId);
-        Task<bool> ValidarUsuario(int usuarioId);
-
-        string ObtenerUsuarioId();
-
-        bool EsAutenticado();
     }
 }

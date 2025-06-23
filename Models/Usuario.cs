@@ -18,5 +18,6 @@ namespace QueseriaSoftware.Models
 
         public ICollection<UsuarioRol> UsuarioRoles { get; set; } = new List<UsuarioRol>();
         public ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
+        public ICollection<Direccion> Direcciones { get; set; } = new List<Direccion>();
     }
 }
