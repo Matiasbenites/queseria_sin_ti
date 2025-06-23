@@ -34,6 +34,11 @@ namespace QueseriaSoftware.Controllers
 
             var resultadoCrearPedido = await _pedidoService.CrearPedido(usuarioId, "Direccion pendiente");
 
+            if (resultadoCrearPedido.PedidoSinProductos)
+            {
+                return RedirectToAction("Catalogo", "Productos");
+            }
+
             if (resultadoCrearPedido.PedidoPendienteDePago)
             {
                 return RedirectToAction("ObtenerDatosDePago", "Pagos");

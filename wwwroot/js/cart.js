@@ -49,8 +49,7 @@
                                 mostrarMensaje('Error al procesar la solicitud', 'error');
                             });
                     } else {
-                        mostrarMensaje(`Por favor indique cantidad`, 'error');
-                        cantidadInput.value = 1;
+                        mostrarMensaje(data.message, 'error');
                     }
                 })
                 .catch(error => {
@@ -59,22 +58,6 @@
                 });
         });
     });
-
-
-    // Función para consultar disponibilidad mediante AJAX
-    function consultarDisponible(productoId, cantidad, inputElement) {
-        fetch(`/Productos/ConsultarDisponible?productoId=${productoId}&cantidad=${cantidad}`)
-            .then(response => response.json())
-            .then(data => {
-                if (!data.disponible) {
-                    alert(`No hay suficiente stock. Stock disponible: ${data.stockDisponible}`);
-                    inputElement.value = data.stockDisponible > 0 ? data.stockDisponible : 1;
-                }
-            })
-            .catch(error => {
-                console.error('Error al verificar disponibilidad:', error);
-            });
-    }
 
     // Función para mostrar mensajes temporales
     function mostrarMensaje(mensaje, tipo) {

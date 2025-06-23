@@ -41,12 +41,21 @@ namespace QueseriaSoftware.Controllers
         [HttpGet]
         public async Task<IActionResult> ConsultarDisponible(int productoId, int cantidad)
         {
+            if (cantidad <= 0)
+            {
+                return Ok(new
+                {
+                    stockDisponible = false,
+                    message = "Por favor indique cantidad"
+                });
+            }
             // Obtener stock actual del producto
             var disponible = await _productosService.ConsultarDisponibilidad(productoId, cantidad);
 
             return Ok(new
             {
-                stockDisponible = disponible
+                stockDisponible = disponible,
+                message = "No hay suficiente stock"
             });
         }
 

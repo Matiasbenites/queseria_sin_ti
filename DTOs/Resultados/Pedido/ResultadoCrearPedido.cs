@@ -11,5 +11,7 @@ namespace QueseriaSoftware.DTOs.Resultados.Pedido
         public bool PedidoPendienteDePago { get; set; }
 
         public bool PedidoConDireccionPendiente { get; set; }
+
+        public bool PedidoSinProductos { get; set; }
     }
 }

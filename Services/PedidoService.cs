@@ -45,6 +45,13 @@ namespace QueseriaSoftware.Services
             }
 
             var productosEnCarrito = await _carritoService.ObtenerProductosDelCarrito(int.Parse(usuarioId));
+
+            if (productosEnCarrito == null || productosEnCarrito.Count == 0)
+            {
+                resultado.PedidoSinProductos = true;
+                return resultado;
+            }
+
             var total = CalcularTotal(productosEnCarrito);
             var direcciones = await _usuariosService.ObtenerDireccionesDelUsuario(usuarioId);
 
