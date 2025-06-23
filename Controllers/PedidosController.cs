@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
@@ -10,6 +11,7 @@ using System.Security.Claims;
 
 namespace QueseriaSoftware.Controllers
 {
+    [Authorize(Roles = "Admin, Cliente")]
     public class PedidosController : Controller
     {
         private readonly AppDbContext _context;
@@ -69,14 +71,42 @@ namespace QueseriaSoftware.Controllers
             return Ok(new { success = true, message = "Dirección asociada correctamente." });
         }
 
-
         // GET: Pedidos ver pedidos
         public async Task<IActionResult> Index()
         {
-            var pedidos = _context.Pedidos.Include(p => p.Usuario);
-            return View(await pedidos.ToListAsync());
+            var pedidos = await _context.Pedidos.Include(p => p.Usuario).ToListAsync();
+
+            if (User.IsInRole("Cliente"))
+            {
+                var usuarioId = User.Identity.IsAuthenticated
+                    ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+                    : HttpContext.Session.Id;
+                var pedidosUsuario = pedidos.Where(x => x.IdUsuario == int.Parse(usuarioId));
+                return View("IndexCliente", pedidosUsuario);
+            }
+
+            // Admin o ambos
+            return View("IndexAdmin", pedidos);
         }
 
+        // GET: Pedidos/Details/5
+        public async Task<IActionResult> ClientePedidoDetalle(int? id)
+        {
+            if (id == null) return NotFound();
+            var usuarioId = User.Identity.IsAuthenticated
+                ? User.FindFirst(ClaimTypes.NameIdentifier).Value
+                : HttpContext.Session.Id;
+            var pedido = await _context.Pedidos
+                .Include(p => p.Usuario)
+                .Include(p => p.PedidoDetalles).ThenInclude(p => p.Producto)
+                .FirstOrDefaultAsync(m => m.Id == id && int.Parse(usuarioId) == m.IdUsuario);
+
+            if (pedido == null) return NotFound();
+
+            return View(pedido);
+        }
+
+        [Authorize(Roles = "Admin")]
         // GET: Pedidos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -91,6 +121,7 @@ namespace QueseriaSoftware.Controllers
             return View(pedido);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Pedidos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -104,6 +135,7 @@ namespace QueseriaSoftware.Controllers
         }
 
         // POST: Pedidos/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Fecha,Total,IdUsuario,Estado")] Pedido pedido)
@@ -132,6 +164,7 @@ namespace QueseriaSoftware.Controllers
         }
 
         // GET: Pedidos/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -160,6 +193,7 @@ namespace QueseriaSoftware.Controllers
         }
 
         // Cambiar Estado del Pedido usando el patrón State
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CambiarEstado(int id)
         {
             var pedido = await _context.Pedidos.FindAsync(id);
