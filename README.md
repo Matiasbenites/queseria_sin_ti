@@ -15,9 +15,10 @@ Se puede consultar el informe del proyecto descargandolo desde como PDF o tambie
 
 [📄 TC_Grupo18_ISII](https://docs.google.com/document/d/1q1q4YK9CjiVzTxsMG3UJMWTDZiDApDBMp7EpSyL-W08/edit?tab=t.0)
 
+[📄 Manual de Usuario.pdf](https://github.com/user-attachments/files/20875035/Manual.de.Usuario.pdf)
+
 [📄 ManualUsuario_Grupo18_ISII](https://docs.google.com/document/d/1ISNBfmT0RDMhdWYi4iXNaubQ6_ZmsB3sbKkk6siQ_Qk/edit?tab=t.0)
 
-[📄 Manual de Usuario.pdf](https://github.com/user-attachments/files/20875035/Manual.de.Usuario.pdf)
 
 ---
 
