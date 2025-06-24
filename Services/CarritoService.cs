@@ -53,74 +53,66 @@ namespace QueseriaSoftware.Services
 
         public async Task<Resultado> ActualizarProductoCarritoLinea(Carrito? carrito, string usuarioId, int productoId, int cantidad)
         {
-          
-            // Verificar si el producto ya está en el carrito
-            var productoEnCarrito = carrito.Lineas
-                .FirstOrDefault(l => l.CarritoId == carrito.Id && l.ProductoId == productoId);
-
-            if (productoEnCarrito != null)
+            try
             {
-                // Actualizar cantidad si ya existe
-                productoEnCarrito.Cantidad = cantidad;
-            }
-            else
-            {
-                // Agregar nueva línea si no existe
-                var nuevaLinea = new CarritoLinea
+                if (carrito == null)
                 {
-                    CarritoId = carrito.Id,
-                    ProductoId = productoId,
-                    Cantidad = cantidad,
+                    return new Resultado
+                    {
+                        Success = false,
+                        Message = "Carrito no encontrado para el usuario"
+                    };
+                }
+
+                await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC ActualizarProductoCarritoLinea @p0, @p1, @p2",
+                    carrito.Id, productoId, cantidad
+                );
+
+                return new Resultado
+                {
+                    Success = true,
+                    Message = "Carrito actualizado"
                 };
-
-                _context.CarritoLineas.Add(nuevaLinea);
             }
-
-            await _context.SaveChangesAsync();
-            return new Resultado
+            catch (Exception ex)
             {
-                Success = true,
-                Message = "Carrito actualizado"
-            };
+                return new Resultado
+                {
+                    Success = false,
+                    Message = "Error al actualizar el carrito: " + ex.Message
+                };
+            }
         }
 
         public async Task<Resultado> AgregarProductoCarritoLinea(Carrito? carrito, string usuarioId, int productoId, int cantidad)
         {
-            if (carrito == null)
+            try
             {
-                // Si el carrito no existe, se crea uno y se agrega
-                carrito = new Carrito
-                {
-                    IdUsuario = int.Parse(usuarioId),
-                    CreadoEn = DateTime.Now,
-                    Activo = true,
-                    ModificadoEn = DateTime.Now,
-                };
+                int usuarioIdInt = int.Parse(usuarioId);
 
-                _context.Carritos.Add(carrito);
-                await _context.SaveChangesAsync();
-
-                var nuevaLinea = new CarritoLinea
-                {
-                    CarritoId = carrito.Id,
-                    ProductoId = productoId,
-                    Cantidad = cantidad,
-                };
-
-                _context.CarritoLineas.Add(nuevaLinea);
-                await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC AgregarProductoCarritoLinea @p0, @p1, @p2",
+                    usuarioIdInt, productoId, cantidad
+                );
 
                 return new Resultado
                 {
                     Success = true,
                     Message = "Producto agregado correctamente"
                 };
-
             }
-
-            //Si el carrito existe, se actualiza la linea
-            return await ActualizarProductoCarritoLinea(carrito, usuarioId, productoId, cantidad);
+            catch (Exception ex)
+            {
+                // Podés loguear el error si querés
+                return new Resultado
+                {
+                    Success = false,
+                    Message = "Ocurrió un error al agregar el producto: " + ex.Message
+                };
+            }
         }
+
 
         private async Task<UsuarioCarritoResultado> ValidarUsuarioCarritoStock(string usuarioId, int productoId, int cantidad)
         {
