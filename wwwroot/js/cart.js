@@ -36,8 +36,9 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    location.reload();
-
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 300);
                                     // Mostrar mensaje de éxito
                                     mostrarMensaje('Producto agregado al carrito', 'success');
                                 } else {
