@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using QueseriaSoftware.Data;
 using QueseriaSoftware.Services;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseRotativa();
+
 
 app.UseAuthentication();
 app.UseAuthorization();

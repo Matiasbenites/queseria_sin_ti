@@ -155,6 +155,9 @@ namespace QueseriaSoftware.Services
         public async Task<Pedido?> ObtenerUltimoPedido(string usuarioId)
         {
             var ultimoPedido = await _context.Pedidos
+                .Include(x => x.Usuario)
+                .Include(x => x.Direccion)
+                .Include(x => x.PedidoDetalles).ThenInclude(x=>x.Producto)
                 .Where(x => x.IdUsuario == int.Parse(usuarioId))
                 .OrderByDescending(x => x.Id)
                 .FirstOrDefaultAsync();

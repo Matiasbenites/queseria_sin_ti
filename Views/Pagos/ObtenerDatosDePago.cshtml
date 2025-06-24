@@ -74,16 +74,18 @@
                     type: 'POST',
                     data: { medioPagoId },
                     success: function (response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: '¡Pago confirmado!',
-                                text: response.message,
-                                confirmButtonText: 'Ver pedido'
-                            }).then(() => {
-                                window.location.href = '@Url.Action("Index", "Pedidos")';
-                            });
-                        } else {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Pago confirmado!',
+                                    html: `
+                                        <p>${response.message}</p>
+                                        <a class="btn btn-success m-2" href="@Url.Action("Index", "Pedidos")">Ver pedido</a>
+                                        <a class="btn btn-outline-secondary m-2" target="_blank" href="/Factura/Imprimir">Imprimir factura</a>
+                                    `,
+                                    showConfirmButton: false
+                                });
+                            } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
