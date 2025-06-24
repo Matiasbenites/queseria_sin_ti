@@ -2,6 +2,7 @@
 using QueseriaSoftware.Data;
 using QueseriaSoftware.DTOs;
 using QueseriaSoftware.DTOs.Resultados;
+using QueseriaSoftware.DTOs.Sp;
 using QueseriaSoftware.Models;
 using QueseriaSoftware.ViewModels;
 using System.Security.Claims;
@@ -19,19 +20,12 @@ namespace QueseriaSoftware.Services
 
         public async Task<bool> ConsultarDisponibilidad(int productoId, int cantidad)
         {
-            if (cantidad <= 0 || productoId <= 0)
-            {
-                return false;
-            }
+            var resultado = await _context
+                .Set<DisponibleResultado>() // DTO temporal
+                .FromSqlRaw("EXEC ConsultarDisponibilidad @p0, @p1", productoId, cantidad)
+                .ToListAsync();
 
-            var producto = await _context.Productos.FindAsync(productoId);
-
-            if (producto != null && producto.Stock > cantidad)
-            {
-                return true;
-            }
-
-            return false;
+            return resultado.FirstOrDefault()?.Disponible == 1;
         }
 
         public async Task<List<ProductoViewModel>> ConsultarCatalogo(string usuarioId)

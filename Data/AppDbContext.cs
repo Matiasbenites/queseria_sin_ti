@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QueseriaSoftware.DTOs.Sp;
 using QueseriaSoftware.Models;
 
 namespace QueseriaSoftware.Data
@@ -20,10 +21,14 @@ namespace QueseriaSoftware.Data
         public DbSet<Provincia> Provincias { get; set; }
         public DbSet<Localidad> Localidades { get; set; }
 
+        public DbSet<DisponibleResultado> DisponibleResultado { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<DisponibleResultado>().HasNoKey();
+
             modelBuilder.Entity<Carrito>()
                 .HasOne(c => c.Usuario)
                 .WithMany(u => u.Carritos)
