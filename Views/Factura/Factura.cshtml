@@ -1,6 +1,6 @@
 ﻿@model QueseriaSoftware.ViewModels.FacturaViewModel
 @{
-    Layout = null; // Recomendado para vistas que se exportan a PDF
+    Layout = null; // Sin Layout para exportar como PDF
 }
 
 <!DOCTYPE html>
@@ -13,85 +13,123 @@
             font-family: Arial, sans-serif;
             font-size: 14px;
             margin: 40px;
+            color: #333;
         }
 
-        .titulo {
-            text-align: center;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #79c57d;
+            padding-bottom: 10px;
             margin-bottom: 20px;
         }
 
-        .cliente-info, .resumen-total {
-            margin-bottom: 20px;
+            .header img {
+                height: 60px;
+            }
+
+        .titulo h2 {
+            margin: 0;
+            color: #79c57d;
         }
+
+        .fecha {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+            .section h3 {
+                background-color: #d9d9d9;
+                padding: 10px;
+                margin-bottom: 10px;
+                font-size: 1.1rem;
+            }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-top: 10px;
         }
 
         th, td {
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ccc;
             text-align: left;
         }
 
         th {
-            background-color: #f0f0f0;
+            background-color: #f4f4f4;
         }
 
         .total {
             text-align: right;
+            font-size: 1.2rem;
             font-weight: bold;
-            font-size: 16px;
+            margin-top: 15px;
+            color: #000;
         }
 
         .footer {
             text-align: center;
             font-size: 12px;
-            margin-top: 30px;
+            color: #666;
+            margin-top: 50px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="titulo">
-        <h2>Factura Nº @Model.PedidoId</h2>
-        <p>Fecha: @Model.Fecha.ToString("dd/MM/yyyy HH:mm")</p>
+
+    <div class="header">
+        <div class="titulo">
+            <h2>Factura Nº @Model.PedidoId</h2>
+            <div class="fecha">Fecha: @Model.Fecha.ToString("dd/MM/yyyy HH:mm")</div>
+        </div>
+        <img src="~/logo.png" alt="Logo" />
     </div>
 
-    <div class="cliente-info">
-        <p><strong>Cliente:</strong> @Model.ClienteNombre</p>
+    <div class="section">
+        <h3>Datos del Cliente</h3>
+        <p><strong>Nombre:</strong> @Model.ClienteNombre</p>
         <p><strong>Medio de Pago:</strong> @Model.MedioPago</p>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unitario</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Items)
-            {
+    <div class="section">
+        <h3>Detalle de Productos</h3>
+        <table>
+            <thead>
                 <tr>
-                    <td>@item.Producto</td>
-                    <td>@item.Cantidad</td>
-                    <td>$@item.PrecioUnitario.ToString("N2")</td>
-                    <td>$@item.Subtotal.ToString("N2")</td>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="total">
-        Total: $@Model.Total.ToString("N2")
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Producto</td>
+                        <td>@item.Cantidad</td>
+                        <td>$@item.PrecioUnitario.ToString("N2")</td>
+                        <td>$@item.Subtotal.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="total">
+            Total a Pagar: $@Model.Total.ToString("N2")
+        </div>
     </div>
 
     <div class="footer">
-        Gracias por su compra.
+        Gracias por su compra. Si tiene dudas, contáctenos.
     </div>
 </body>
 </html>
