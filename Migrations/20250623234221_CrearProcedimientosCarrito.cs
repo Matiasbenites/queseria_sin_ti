@@ -47,7 +47,7 @@ namespace QueseriaSoftware.Migrations
                 BEGIN
                     IF EXISTS (
                         SELECT 1 FROM CarritoLineas WHERE CarritoId = @CarritoId AND ProductoId = @ProductoId
-                    )dotnet
+                    )
                     BEGIN
                         UPDATE CarritoLineas
                         SET Cantidad = @Cantidad
