@@ -85,7 +85,7 @@ namespace QueseriaSoftware.Services
                 if (producto.Stock < item.Cantidad)
                 {
                     resultado.Success = false;
-                    resultado.Message = $"Stock insuficiente para el producto '{producto.Nombre}'. Disponible: {producto.Stock}, requerido: {item.Cantidad}.";
+                    resultado.Message = $"No hay suficiente stock.";
                     return resultado;
                 }
 

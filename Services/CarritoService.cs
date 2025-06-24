@@ -202,10 +202,28 @@ namespace QueseriaSoftware.Services
         {
             var carrito = await ObtenerCarrito(usuarioId);
 
+            if (carrito == null)
+                return new CarritoViewModel(); // o lanzar excepción, según tu flujo
+
+            // Cargar las líneas con los productos
             var lineas = await _context.CarritoLineas
                 .Include(l => l.Producto)
                 .Where(l => l.CarritoId == carrito.Id)
                 .ToListAsync();
+
+            // Filtrar líneas sin stock
+            var lineasSinStock = lineas
+                .Where(l => l.Producto == null || l.Producto.Stock <= 0)
+                .ToList();
+
+            if (lineasSinStock.Any())
+            {
+                _context.CarritoLineas.RemoveRange(lineasSinStock);
+                await _context.SaveChangesAsync();
+
+                // Actualizar lista sin las líneas eliminadas
+                lineas = lineas.Except(lineasSinStock).ToList();
+            }
 
             var viewModel = new CarritoViewModel
             {
@@ -226,6 +244,7 @@ namespace QueseriaSoftware.Services
 
             return viewModel;
         }
+
 
         public async Task<Resultado> Eliminar(string usuarioId)
         {

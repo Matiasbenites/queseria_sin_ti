@@ -87,10 +87,11 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
-                                text: response.message
+                                text: response.message,
+                                confirmButtonText: 'Ir a carrito'
                             }).then(() => {
-                                // Restaurar botón después del error
-                                $btnFinalizar.prop('disabled', false).text('Finalizar pedido');
+                                // Redirigir a catálogo cuando clickean "Ir a catálogo"
+                                window.location.href = '/carrito/obtenerCarritoUsuario';
                             });
                         }
                     },
@@ -98,9 +99,10 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'Ocurrió un problema al procesar el pago.'
+                            text: 'Ocurrió un problema al procesar el pago.',
+                            confirmButtonText: 'Ir a carrito'
                         }).then(() => {
-                            $btnFinalizar.prop('disabled', false).text('Finalizar pedido');
+                            window.location.href = '/carrito/obtenerCarritoUsuario';
                         });
                     }
                 });
