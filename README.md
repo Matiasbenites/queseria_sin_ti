@@ -10,9 +10,13 @@
 ## Documentación adjunta
 
 Se puede consultar el informe del proyecto descargandolo desde como PDF o tambien se puede visualizar desde el docs donde fue trabajado:  
-[📄 TC_E1_Grupo18_ISII (PDF)](https://github.com/user-attachments/files/19951074/INGII-QueseriaDeMiSinTiSoftware-2025.pdf)
 
-[📄 TC_E1_Grupo18_ISII](https://docs.google.com/document/d/1q1q4YK9CjiVzTxsMG3UJMWTDZiDApDBMp7EpSyL-W08/edit?tab=t.0)
+[📄 TrabajoDeCampo_Grupo18.pdf](https://github.com/user-attachments/files/20875012/TrabajoDeCampo_Grupo18.pdf)
+
+[📄 TC_Grupo18_ISII](https://docs.google.com/document/d/1q1q4YK9CjiVzTxsMG3UJMWTDZiDApDBMp7EpSyL-W08/edit?tab=t.0)
+
+[📄 ManualUsuario_Grupo18_ISII](https://docs.google.com/document/d/1ISNBfmT0RDMhdWYi4iXNaubQ6_ZmsB3sbKkk6siQ_Qk/edit?tab=t.0))
+
 
 ---
 
