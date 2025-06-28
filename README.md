@@ -27,9 +27,9 @@ Se puede consultar el informe del proyecto descargandolo desde como PDF o tambie
 [📄 Anexo B - Manual de Usuarios del sistema](https://docs.google.com/document/d/1ISNBfmT0RDMhdWYi4iXNaubQ6_ZmsB3sbKkk6siQ_Qk)
 
 ## Manual de instalación o deploy
-[📄 Anexo C - Manual de Instalación](https://docs.google.com/document/d/11z-tuhpAYrXOA_YjaHoHbtV4fLeSK5O-RNzcZeij0uE)
-
 [📕 Anexo C - Manual de Instalación.pdf](https://github.com/user-attachments/files/20957706/Anexo.C.-.Manual.de.Instalacion.pdf)
+
+[📄 Anexo C - Manual de Instalación](https://docs.google.com/document/d/11z-tuhpAYrXOA_YjaHoHbtV4fLeSK5O-RNzcZeij0uE)
 
 ---
 
