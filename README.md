@@ -11,14 +11,25 @@
 
 Se puede consultar el informe del proyecto descargandolo desde como PDF o tambien se puede visualizar desde el docs donde fue trabajado:  
 
-[📄 TrabajoDeCampo_Grupo18.pdf](https://github.com/user-attachments/files/20875012/TrabajoDeCampo_Grupo18.pdf)
+## Sistema de distribución Interregional de Productos Lácteos y Perecederos: Quesería de mi sin ti
+[📕 TP_CAMPO_INGII_GRUPO18.pdf](https://github.com/user-attachments/files/20957699/TP_CAMPO_INGII_GRUPO18.pdf)
 
-[📄 TC_Grupo18_ISII](https://docs.google.com/document/d/1q1q4YK9CjiVzTxsMG3UJMWTDZiDApDBMp7EpSyL-W08/edit?tab=t.0)
+[📄 TP_CAMPO_INGII_GRUPO18](https://docs.google.com/document/d/1q1q4YK9CjiVzTxsMG3UJMWTDZiDApDBMp7EpSyL-W08)
 
-[📄 Manual de Usuario.pdf](https://github.com/user-attachments/files/20875035/Manual.de.Usuario.pdf)
+## Especificaciones técnicas
+[📕 Anexo A - Especificación de requisitos de software.pdf](https://github.com/user-attachments/files/20957702/Anexo.A.-.Especificacion.de.requisitos.de.software.pdf)
 
-[📄 ManualUsuario_Grupo18_ISII](https://docs.google.com/document/d/1ISNBfmT0RDMhdWYi4iXNaubQ6_ZmsB3sbKkk6siQ_Qk/edit?tab=t.0)
+[📄 Anexo A - Especificación de requisitos de software](https://docs.google.com/document/d/1r4YtS40HzI-2vpxS8yR0lnXoeCffKpYxMD-9qLdLkgk)
 
+## Manual de usuarios del sistema
+[📕 Anexo B - Manual de Usuarios del sistema.pdf](https://github.com/user-attachments/files/20957705/Anexo.B.-.Manual.de.Usuarios.del.sistema.pdf)
+
+[📄 Anexo B - Manual de Usuarios del sistema](https://docs.google.com/document/d/1ISNBfmT0RDMhdWYi4iXNaubQ6_ZmsB3sbKkk6siQ_Qk)
+
+## Manual de instalación o deploy
+[📄 Anexo C - Manual de Instalación](https://docs.google.com/document/d/11z-tuhpAYrXOA_YjaHoHbtV4fLeSK5O-RNzcZeij0uE)
+
+[📕 Anexo C - Manual de Instalación.pdf](https://github.com/user-attachments/files/20957706/Anexo.C.-.Manual.de.Instalacion.pdf)
 
 ---
 
@@ -31,7 +42,7 @@ Se puede consultar el informe del proyecto descargandolo desde como PDF o tambie
 
 ---
 
-## Requisitos de instalación
+## Requisitos de compilación
 
 - [Visual Studio Community 2022](https://visualstudio.microsoft.com/es/vs/community/) (recomendado) o cualquier editor/compilador compatible con .NET.
 - [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0).
@@ -40,7 +51,7 @@ Se puede consultar el informe del proyecto descargandolo desde como PDF o tambie
 
 ---
 
-## Instrucciones de instalación
+## Instrucciones para compilar el programa
 
 1. **Clonar el repositorio**
 
